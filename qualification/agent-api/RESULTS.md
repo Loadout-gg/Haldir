@@ -1,6 +1,6 @@
 # Agent API local qualification results
 
-Scope: local synthetic policy/SDK tests only. No partner credentials, owner signing or mainnet money movement.
+Scope: local synthetic policy/SDK and ephemeral-key signing tests only. No partner credentials, real owner signing or mainnet money movement.
 
 ## Local execution
 
@@ -19,10 +19,14 @@ Scope: local synthetic policy/SDK tests only. No partner credentials, owner sign
 Run the offline Agent API checks from the repository root:
 
 ```sh
-node --test --test-timeout=10000 qualification/agent-api/policy.test.mjs qualification/agent-api/sdk.test.mjs
+node --test --test-timeout=10000 qualification/agent-api/*.test.mjs
 ```
 
 Transport injection always returns a synthetic response or throws; it never falls through to real fetch. Synthetic tokens are not real credentials. These tests do not establish hosted policy enforcement, owner wallet compatibility, financial concurrency or return of funds.
+
+## Owner signing follow-up
+
+Six new SDK characterization tests pass using ephemeral keys and synthetic identities. Combined local suite: ten passing tests. No live owner or service was exercised. See [OWNER-SIGNING.md](OWNER-SIGNING.md) for corrected Meteor compatibility analysis, source references and limits.
 
 ## Feasibility matrix
 
@@ -30,7 +34,7 @@ All rows start NOT_RUN. Public discovery evidence is recorded separately when av
 
 | ID | Test | Status |
 |---|---|---|
-| F01 | Public preflight | NOT_RUN |
+| F01 | Public preflight | PARTIAL: public network/catalog/schema read; asset approval and live compatibility pending |
 | F02 | Access | NOT_RUN |
 | F03 | Owner flow | NOT_RUN |
 | F04 | Work grants | NOT_RUN |
