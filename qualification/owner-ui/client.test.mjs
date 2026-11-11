@@ -3,7 +3,93 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import * as client from './client.mjs';
 
-import { actions, encodeSignedDelegate, KeyPair, KeyPairSigner } from 'near-api-js';
+import { actions, encodeSignedDelegate, KeyPair, KeyPairSigner, PublicKey } from 'near-api-js';
+import { MeteorWallet } from '@meteorwallet/sdk';
+
+// Real installed SDK request/response decoder; only transport and unsigned
+// preparation are synthetic. No wallet popup, RPC, storage or network access.
+async function meteorResponse(t, result) {
+  const wire = Buffer.from(encodeSignedDelegate(result.signedDelegate)).toString('base64');
+  let listener, sends = 0;
+  t.mock.method(console, 'log', () => {}); // SDK logs raw responses even with its logger off.
+  t.mock.method(console, 'debug', () => {});
+  t.mock.method(globalThis, 'fetch', () => { assert.fail('offline SDK fixture attempted network'); });
+  const previousWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  t.after(() => { if (previousWindow) Object.defineProperty(globalThis, 'window', previousWindow); else delete globalThis.window; });
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: {
+    meteorCom: {
+      addMessageDataListener(callback) { listener = callback; },
+      sendMessageData(message) {
+        assert.equal(message.actionType, 'sign_delegate_actions');
+        if (message.status === 'closed_success') return; // SDK acknowledgment, not another request.
+        sends++;
+        queueMicrotask(() => listener({ uid: message.uid, status: 'closed_success', payload: {
+          signedDelegatesWithHashes: [{ signedDelegateAction: wire, delegateHash: Buffer.from(result.delegateHash).toString('base64') }],
+        } }));
+      },
+    },
+    open() { assert.fail('offline SDK fixture attempted popup'); },
+  } });
+  const wallet = Object.create(MeteorWallet.prototype);
+  wallet.logger = { log() {} };
+  wallet._networkId = 'mainnet';
+  wallet.transformDelegateActions = async () => [result.signedDelegate.delegateAction];
+  const output = await wallet.requestSignDelegateActions({ delegateActions: [], account });
+  assert.equal(sends, 1);
+  return { output, wire };
+}
+
+test('actual installed Meteor transport deserializer preserves exact signed bytes and bigint nonce', async t => {
+  const { boot, output: native } = await signingFixture();
+  const result = native.signedDelegatesWithHashes[0];
+  // A fresh synthetic signature carries a nonce above Number.MAX_SAFE_INTEGER.
+  const pair = KeyPair.fromRandom('ed25519');
+  boot.expectedOwner.public_key = boot.generated.signer.public_key = pair.getPublicKey().toString();
+  const signed = await new KeyPairSigner(pair).signDelegateAction({ ...result.signedDelegate.delegateAction,
+    publicKey: pair.getPublicKey(), nonce: 9007199254740993n, maxBlockHeight: 9007199254740995n });
+  const { output, wire } = await meteorResponse(t, signed);
+  const raw = output.signedDelegatesWithHashes[0].signedDelegate.delegateAction;
+  assert.equal(raw.publicKey instanceof PublicKey, false);
+  assert.equal(raw.publicKey.toString(), '[object Object]');
+  assert.equal(raw.nonce, 9007199254740993n);
+  assert.equal(raw.maxBlockHeight, 9007199254740995n);
+  const before = encodeSignedDelegate(output.signedDelegatesWithHashes[0].signedDelegate);
+  assert.deepEqual(client.signedData(boot, output), { ...boot.generated.intent, signed_delegate: wire });
+  assert.deepEqual(encodeSignedDelegate(output.signedDelegatesWithHashes[0].signedDelegate), before);
+});
+
+test('key normalization accepts byte arrays without coercion and rejects ambiguous or malformed ed25519 keys', async () => {
+  const { boot, output } = await signingFixture();
+  const signed = output.signedDelegatesWithHashes[0].signedDelegate;
+  const key = signed.delegateAction.publicKey;
+  const bytes = Uint8Array.from(key.data);
+  const withKey = publicKey => ({ signedDelegatesWithHashes: [{ signedDelegate: {
+    ...signed, delegateAction: { ...signed.delegateAction, publicKey },
+  } }] });
+  const expected = Buffer.from(encodeSignedDelegate(signed)).toString('base64');
+  for (const data of [bytes, Array.from(bytes)]) {
+    assert.equal(client.signedData(boot, withKey({ ed25519Key: { data } })).signed_delegate, expected);
+  }
+  const ambiguous = new PublicKey({ keyType: 0, data: bytes });
+  ambiguous.secp256k1Key = { data: new Uint8Array(64) };
+  const wrongEnum = new PublicKey({ keyType: 0, data: bytes });
+  wrongEnum.enum = 'secp256k1Key';
+  const invalidData = [bytes.slice(1), new Uint8Array(33), Array.from(bytes, () => '0'),
+    [-1, ...bytes.slice(1)], [256, ...bytes.slice(1)], [0.5, ...bytes.slice(1)]];
+  for (const publicKey of [ambiguous, wrongEnum,
+    { toString: () => boot.expectedOwner.public_key },
+    { ed25519Key: { data: bytes }, secp256k1Key: { data: new Uint8Array(64) } },
+    { ed25519Key: { data: KeyPair.fromRandom('ed25519').getPublicKey().data } },
+    { secp256k1Key: { data: new Uint8Array(64) } },
+    ...invalidData.map(data => ({ ed25519Key: { data } })),
+  ]) assert.throws(() => client.signedData(boot, withKey(publicKey)), /match/i);
+  for (const delta of [{ senderId: 'other.near' }, { receiverId: 'other.near' },
+    { actions: [actions.functionCall('changed', {}, 1n, 0n)] }]) {
+    const plain = withKey({ ed25519Key: { data: bytes } });
+    Object.assign(plain.signedDelegatesWithHashes[0].signedDelegate.delegateAction, delta);
+    assert.throws(() => client.signedData(boot, plain), /match/i);
+  }
+});
 
 async function signingFixture() {
   const boot = fixture();
@@ -90,6 +176,28 @@ test('uncertain local save does not falsely report nothing saved or permit repea
   assert.equal(await controller.sign(), false);
   assert.equal(posts, 1);
 });
+
+for (const status of [400, 409, 500, 503]) {
+  test(`HTTP ${status} local save latches uncertainty and blocks reconnect and repeat signing`, async () => {
+    const { boot, output } = await signingFixture();
+    let prompts = 0, posts = 0;
+    const wallet = { async createAction(request) { return { async promptForExecution() {
+      prompts++; return request.id === 'near::sign_in' ? account : output;
+    } }; } };
+    const controller = client.createController(boot, { wallet: async () => wallet, clock: () => now,
+      fetcher: async () => { posts++; return { ok: false, status }; } });
+    await controller.connect();
+    assert.equal(await controller.sign(), false);
+    assert.match(controller.snapshot().block || '', /unconfirmed/i);
+    assert.match(controller.snapshot().notice, /unconfirmed/i);
+    assert.equal(controller.snapshot().saved, false);
+    assert.doesNotMatch(controller.snapshot().notice, /nothing was saved|before retrying/i);
+    assert.equal(await controller.connect(), false);
+    assert.equal(await controller.sign(), false);
+    assert.equal(prompts, 2);
+    assert.equal(posts, 1);
+  });
+}
 
 test('in-memory SDK storage does not persist across adapter instances', async () => {
   assert.equal(typeof client.memoryStorage, 'function', 'in-memory adapter is implemented');

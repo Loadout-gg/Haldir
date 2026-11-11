@@ -1,5 +1,5 @@
 // Local qualification only. No submission or intent generation is implemented.
-import { actions, encodeDelegateAction, encodeSignedDelegate } from 'near-api-js';
+import { actions, encodeDelegateAction, encodeSignedDelegate, PublicKey } from 'near-api-js';
 
 function freeze(value) {
   if (value && typeof value === 'object') {
@@ -46,13 +46,24 @@ export function signedData(boot, output) {
   const rows = output?.signedDelegatesWithHashes;
   if (!Array.isArray(rows) || rows.length !== 1 || !rows[0]?.signedDelegate?.delegateAction) throw new Error('Unexpected wallet response.');
   const signed = rows[0].signedDelegate;
-  const delegate = signed.delegateAction;
+  // Borsh returns a plain enum, not a PublicKey instance. Normalize only the
+  // ed25519 variant and validate bytes before Uint8Array can coerce anything.
+  const raw = signed.delegateAction;
+  const key = raw.publicKey;
+  const data = key?.ed25519Key?.data;
+  if ((!Array.isArray(data) && !(data instanceof Uint8Array)) || data.length !== 32 ||
+      !Array.from(data).every(byte => Number.isInteger(byte) && byte >= 0 && byte <= 255) ||
+      (key instanceof PublicKey ? key.keyType !== 0 || key.enum !== 'ed25519Key' ||
+        key.secp256k1Key !== undefined || key.mlDsa65Key !== undefined :
+        Object.getPrototypeOf(key) !== Object.prototype || Object.keys(key).join(',') !== 'ed25519Key' ||
+        Object.keys(key.ed25519Key).join(',') !== 'data')) throw new Error('Wallet public key does not match the expected ed25519 key.');
+  const delegate = { ...raw, publicKey: new PublicKey({ keyType: 0, data: Uint8Array.from(data) }) };
   const expected = toDelegateAction(boot.generated);
   if (delegate.senderId !== boot.expectedOwner.account_id || delegate.receiverId !== expected.receiverId || delegate.publicKey?.toString() !== boot.expectedOwner.public_key) throw new Error('Wallet signature does not match the expected owner or payload.');
   const actualBytes = encodeDelegateAction(delegate);
   const expectedBytes = encodeDelegateAction({ ...delegate, ...expected });
   if (actualBytes.length !== expectedBytes.length || actualBytes.some((byte, index) => byte !== expectedBytes[index])) throw new Error('Wallet actions do not match the preview.');
-  const bytes = encodeSignedDelegate(signed);
+  const bytes = encodeSignedDelegate({ ...signed, delegateAction: delegate });
   let binary = '';
   for (const byte of bytes) binary += String.fromCharCode(byte);
   return { ...boot.generated.intent, signed_delegate: btoa(binary) };
@@ -136,7 +147,7 @@ export function createController(source, { wallet = getWallet, fetcher = globalT
           headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': bootstrap.csrfToken },
           body: JSON.stringify({ signed_data }), signal: AbortSignal.timeout(15000),
         });
-        if (!response.ok) { notice = 'Local server did not accept the signature. Nothing was submitted. Check the local record before retrying.'; return false; }
+        if (!response.ok) throw new Error('Local save was not confirmed.');
         saved = true; notice = 'Signature saved locally. Submission not enabled.';
         return true;
       } catch (error) {

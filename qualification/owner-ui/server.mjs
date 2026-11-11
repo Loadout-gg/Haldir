@@ -32,13 +32,13 @@ function validateSignature(signed, generated, expectedOwner) {
 }
 
 export function createOwnerServer(options) {
-  const { now = Date.now, saveSignature, html = '', bundle = '' } = options;
+  const { now = Date.now, saveSignature, html = '', bundle = '', initialSaveBlocked = false } = options;
   const generated = structuredClone(options.generated);
   const expectedOwner = structuredClone(options.expectedOwner);
   if (generated.type !== 'agent_create' || generated.intent?.standard !== 'nep366' ||
       generated.signer?.account_id !== expectedOwner.account_id || generated.signer?.public_key !== expectedOwner.public_key) throw Error('owner_intent_mismatch');
   const csrfToken = randomBytes(32).toString('hex');
-  let saving = false, saved = false;
+  let saving = false, saved = false, uncertainSave = initialSaveBlocked !== false;
   const fresh = () => generated.status === 'PENDING_SIGNATURE' && Number.isFinite(Date.parse(generated.expires_at)) && now() < Date.parse(generated.expires_at);
   const server = createServer(async (req,res) => {
     res.setHeader('Cache-Control','no-store');
@@ -48,7 +48,7 @@ export function createOwnerServer(options) {
     function json(status,body){res.writeHead(status,{'Content-Type':'application/json'});res.end(JSON.stringify(body));}
     const origin = `http://127.0.0.1:${server.address().port}`;
     if (req.headers.host !== origin.slice(7) || (req.headers.origin && req.headers.origin !== origin) || req.headers['sec-fetch-site'] === 'cross-site') return json(403,{error:'origin_denied'});
-    if (req.method === 'GET' && req.url === '/api/intent') return json(200,{generated,expectedOwner,csrfToken,canSign:fresh()&&!saved&&!saving});
+    if (req.method === 'GET' && req.url === '/api/intent') return json(200,{generated,expectedOwner,csrfToken,canSign:fresh()&&!saved&&!saving&&!uncertainSave});
     if (req.method === 'GET' && (req.url === '/' || req.url === '/client.js')) {
       const body = req.url === '/' ? html : bundle;
       if (!body) return json(503,{error:'asset_not_built'});
@@ -57,7 +57,7 @@ export function createOwnerServer(options) {
     if (req.method !== 'POST' || req.url !== '/api/signature') return json(404,{error:'not_found'});
     const token = req.headers['x-csrf-token'];
     if (req.headers.origin !== origin || typeof token !== 'string' || !/^[a-f0-9]{64}$/.test(token) || !timingSafeEqual(Buffer.from(token),Buffer.from(csrfToken))) return json(403,{error:'csrf_denied'});
-    if (!fresh() || saving || saved) return json(409,{error:'expired_or_already_saved'});
+    if (!fresh() || saving || saved || uncertainSave) return json(409,{error:'expired_or_already_saved'});
     if (req.headers['content-type'] !== 'application/json') return json(415,{error:'json_required'});
     saving = true;
     try {
@@ -76,7 +76,7 @@ export function createOwnerServer(options) {
       try {
         await saveSignature({correlation_id:generated.correlation_id,type:generated.type,signed_data:signed});
         saved=true;
-      } catch { return json(409,{error:'signature_storage_unavailable'}); }
+      } catch { uncertainSave=true;return json(409,{error:'signature_storage_unavailable'}); }
       return json(201,{status:'SAVED_LOCALLY',submitted:false});
     } catch { if(!res.headersSent) json(400,{error:'request_failed'}); }
     finally {saving=false;}
