@@ -2,6 +2,16 @@
 
 [Back to Haldir](../README.md)
 
+## Intelligence proposes. Authority stays bounded.
+
+[![Haldir authority map: the workspace, model, trusted runtime, restricted signer, owner wallet and NEAR mandate have distinct responsibilities. Payment confirmation and source delivery return through separate evidence paths.](assets/haldir-authority-map.svg)](assets/haldir-authority-map.svg)
+
+**Logical architecture, not a live-deployment attestation.** Backend boxes are modules and adapters, not independent microservices or custodians. The browser demo is a separate scripted simulation.
+
+[Open the full-size SVG](assets/haldir-authority-map.svg) · [Download the standalone HTML](https://raw.githubusercontent.com/Loadout-gg/Haldir/main/docs/haldir-architecture.html)
+
+Save the HTML and open it in a browser for expandable implementation notes and source references. It works offline; GitHub's file viewer does not run it as a webpage.
+
 ## A research agent is not a wallet owner
 
 Haldir separates five concerns: the user's intent, explicit spending authorization, execution, evidence delivery and recovery. The model can propose work and summarize delivered material. It cannot grant itself a new recipient, extend an expired mandate or turn an unknown payment into a confirmed one.
