@@ -109,5 +109,26 @@
   ],
   "omissions": [],
   "originalInputSourceMembers": 278,
-  "sourceDeltaScope": "test paths and temporary-directory helper only; no framework/runtime guards or scanner policy changes"
+  "sourceDeltaScope": "13 test/spec path and temporary-directory helper changes; two explicit-account helper/test changes; no framework/runtime guards or scanner policy changes",
+  "accountConfigurationFiles": [
+    {
+      "path": "deployment/haldir-cloud/packet.py",
+      "bytes": 19640,
+      "sha256": "b26a85ff84bda483317dbad020b7e6c1800e22161f7f95d06cd7a2665fd30878",
+      "gitMode": "100644"
+    },
+    {
+      "path": "deployment/haldir-cloud/test_packet.py",
+      "bytes": 19767,
+      "sha256": "fefbb2eb478e634b894b8bb73ba0d0c1468abb5375f97f3b2c99636f46e9aa14",
+      "gitMode": "100644"
+    },
+    {
+      "path": "deployment/haldir-cloud/ACCOUNT-CONFIGURATION.md",
+      "bytes": 979,
+      "sha256": "d6e7d2ab3093f6873ec1b4195ff4f3551f3142b79ca0182b302028c39914df1e",
+      "gitMode": "100644"
+    }
+  ],
+  "accountConfigurationScope": "Public after-bytes only; no private preimage hashes. Offline command renderer; no deployment authorization."
 }

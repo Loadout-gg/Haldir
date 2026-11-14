@@ -4,16 +4,16 @@
 
 ## Published source
 
-This incremental release publishes **276 of the 278 selected members**, including the actual React application and demo state model, backend/agent/vendor modules, native NEAR mandate and factory contracts, wallet/request helpers, tests, lockfiles and runtime-composition code. The selection count includes the root README and ignore rules. It is not a marketing-only export or replacement implementation.
+This incremental release publishes **all 278 selected members**, including the actual React application and demo state model, backend/agent/vendor modules, native NEAR mandate and factory contracts, wallet/request helpers, tests, lockfiles and runtime-composition code. The selection count includes the root README and ignore rules. It is not a marketing-only export or replacement implementation.
 
-Exactly two selected files are withheld pending portable account configuration:
+The two previously withheld selected files are now included with portable account configuration:
 
-- `deployment/haldir-cloud/packet.py` — optional cloud command helper, not available in this release.
-- `deployment/haldir-cloud/test_packet.py` — its corresponding test, also not available.
+- `deployment/haldir-cloud/packet.py` — offline cloud command renderer requiring explicit validated `HALDIR_GCLOUD_ACCOUNT` configuration.
+- `deployment/haldir-cloud/test_packet.py` — its corresponding offline tests, including account validation and account-independent import/assembly.
 
-No command in the quickstart requires these withheld files. Cloud deployment tooling is therefore incomplete; this release does not claim that all selected deployment tools are usable.
+No command in the quickstart requires these files. See [account configuration](../deployment/haldir-cloud/ACCOUNT-CONFIGURATION.md) for use with your own authorized account. The helper only renders command arrays; inclusion is not deployment authorization or proof of a usable hosted deployment.
 
-The [public file inventory](source-files.json) records final relative paths, modes, byte lengths and SHA-256 hashes for the published tree, excluding only the inventory itself to avoid a self-referential hash. Existing public history, documentation and visual assets are retained. Generated output, dependency installations, credentials, logs, operator records and personal application details are not source-release contents.
+The published tree contains **294 files**, including the 278 selected members, retained public documentation/assets and the account-configuration note. The [public file inventory](source-files.json) records final relative paths, modes, byte lengths and SHA-256 hashes for the published tree, excluding only the inventory itself to avoid a self-referential hash. Existing public history, documentation and visual assets are retained. Generated output, dependency installations, credentials, logs, operator records and personal application details are not source-release contents.
 
 ## Code, website and execution are separate
 
@@ -23,11 +23,13 @@ The [public file inventory](source-files.json) records final relative paths, mod
 
 ## Verification and limits
 
-Published selected source is byte-identical to the qualified portable selection, except for public-facing README packaging. Its only source differences from the original selected candidate are the 13 test/spec path changes described in the [portability notes](SOURCE-PORTABILITY.md) and [path-change inventory](source-portability-files.json). The two files listed above are the only selected-member omissions.
+Published selected source retains the qualified portable selection and public-facing README packaging, with the two account-helper files integrated as qualified public-safe replacements. Source differences from the original selected candidate are the 13 test/spec path changes and the two account-helper changes described in the [portability notes](SOURCE-PORTABILITY.md) and [changed-source inventory](source-portability-files.json). There are no selected-member omissions; the account-helper inventory records public after-bytes only.
 
 The inherited 11-pattern scanner and five exact reviewed spans bound to four whole-file hashes are unchanged. All final payload files and staged Git blobs are scanned, including test fixtures and documentation. Zero unclassified findings is a heuristic result, not proof of privacy, secret absence or a security audit.
 
 The portable selection reuses 73 distinct focused offline checks (46 path/helper checks and 27 existing adapter/owner-path tests), plus syntax checks for the 13 changed files. These checks are not a fresh clean-install build, full-suite result, browser acceptance or public-chain/model acceptance. Historical unrelated totals are not combined.
+
+The account-helper integration separately passed 18 Python tests and 102 subtests in a closed offline runner, with zero product-test network, external-command or outside-area write attempts. This verifies the bounded helper behavior, not cloud execution or deployment readiness.
 
 ## Reproduction prerequisites
 

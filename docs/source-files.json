@@ -1,11 +1,8 @@
 {
   "schema": "haldir-public-tree-inventory-v1",
   "scope": "Final published files excluding this inventory itself",
-  "selectedMembersPublished": 276,
-  "selectedMembersWithheld": [
-    "deployment/haldir-cloud/packet.py",
-    "deployment/haldir-cloud/test_packet.py"
-  ],
+  "selectedMembersPublished": 278,
+  "selectedMembersWithheld": [],
   "files": [
     {
       "path": ".gitignore",
@@ -21,8 +18,14 @@
     },
     {
       "path": "README.md",
-      "bytes": 11784,
-      "sha256": "7f5cda31abadb88e1883c69e87d924e0135eff4c865c64b6f84d4f0654a71ea8",
+      "bytes": 11886,
+      "sha256": "45f3e46fc35f1f0f0c9a6b896c05845fecc605f701af3dcf8e94a64e11efa741",
+      "gitMode": "100644"
+    },
+    {
+      "path": "deployment/haldir-cloud/ACCOUNT-CONFIGURATION.md",
+      "bytes": 979,
+      "sha256": "d6e7d2ab3093f6873ec1b4195ff4f3551f3142b79ca0182b302028c39914df1e",
       "gitMode": "100644"
     },
     {
@@ -38,9 +41,21 @@
       "gitMode": "100644"
     },
     {
+      "path": "deployment/haldir-cloud/packet.py",
+      "bytes": 19640,
+      "sha256": "b26a85ff84bda483317dbad020b7e6c1800e22161f7f95d06cd7a2665fd30878",
+      "gitMode": "100644"
+    },
+    {
       "path": "deployment/haldir-cloud/release.requirements.json",
       "bytes": 2175,
       "sha256": "ea729d3c2370cbb3572c276bac77f924102601716d3cf6b9fb4e1b3fccc155cd",
+      "gitMode": "100644"
+    },
+    {
+      "path": "deployment/haldir-cloud/test_packet.py",
+      "bytes": 19767,
+      "sha256": "fefbb2eb478e634b894b8bb73ba0d0c1468abb5375f97f3b2c99636f46e9aa14",
       "gitMode": "100644"
     },
     {
@@ -381,20 +396,20 @@
     },
     {
       "path": "docs/SOURCE-PORTABILITY.md",
-      "bytes": 4830,
-      "sha256": "43413f11505cdc5d0fcd7661bed5ef7c0f9c3a39237c8809bc7598030310a0e7",
+      "bytes": 5736,
+      "sha256": "8da8e323344a062754528fb27376ab209f816ff31861a57cbf706cd52bb82d73",
       "gitMode": "100644"
     },
     {
       "path": "docs/SOURCE-PROVENANCE.md",
-      "bytes": 4776,
-      "sha256": "996c98988acb47204f212cd1f9982b3846e315d09df5de48d18dc8701a6a2a7d",
+      "bytes": 5552,
+      "sha256": "729aba071e614fa3c3d5013b9e4700b5d7f75a102153fd757f7a8f03aa070c0d",
       "gitMode": "100644"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 8814,
-      "sha256": "de4e678e12b0450da98fd354cd1b40276082fd12b3ae5c022460f7c4f561f289",
+      "bytes": 9233,
+      "sha256": "39b0c984f0c0cfa4fbf66246acd7b139d7d619093089ef3fbd3c238d45bfe3d6",
       "gitMode": "100644"
     },
     {
@@ -435,8 +450,8 @@
     },
     {
       "path": "docs/source-portability-files.json",
-      "bytes": 4798,
-      "sha256": "af2f7357d9a5d0adea698fcabd1a59ff24fb68e601aae49afcaf86b1a15fe1b5",
+      "bytes": 5635,
+      "sha256": "6a567753d231e6fc9060ce55c436eaaeecacd3d49e3a5e1582df640623b772af",
       "gitMode": "100644"
     },
     {
@@ -1747,5 +1762,6 @@
       "sha256": "baf43a2410413471117316863a157039604743071d5ac4f54e71b418d3a8eb16",
       "gitMode": "100644"
     }
-  ]
+  ],
+  "totalFiles": 294
 }

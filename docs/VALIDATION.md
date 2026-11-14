@@ -16,7 +16,7 @@ Choose the proof you want. These paths have different prerequisites and establis
 
 Use **Node 26.13.1**. The frontend declares **npm 12.2.2**. Check your versions before installing. Root and frontend lockfiles are separate.
 
-This release includes `prototype/`, `src/`, `tests/`, `qualification/mandate-contract/`, `qualification/mandate-factory/` and `qualification/native-wallet/`. Only the optional cloud command helper `deployment/haldir-cloud/packet.py` and its test `deployment/haldir-cloud/test_packet.py` are withheld pending portable account configuration. Do not invoke that helper from this release. See [source provenance](SOURCE-PROVENANCE.md) and [portability notes](SOURCE-PORTABILITY.md).
+This release includes `prototype/`, `src/`, `tests/`, `qualification/mandate-contract/`, `qualification/mandate-factory/` and `qualification/native-wallet/`, with all 278 selected members present. The offline cloud command helper `deployment/haldir-cloud/packet.py` and its test `deployment/haldir-cloud/test_packet.py` are now included. Rendering commands requires your own explicitly configured authorized account; imports and pure assembly do not. See [account configuration](../deployment/haldir-cloud/ACCOUNT-CONFIGURATION.md), [source provenance](SOURCE-PROVENANCE.md) and [portability notes](SOURCE-PORTABILITY.md). The helper only renders command arrays; its inclusion does not authorize cloud execution. Its 18 Python tests and 102 subtests passed in a closed offline runner with zero product-test external-operation attempts; this is not a clean-install, full-suite or deployment result.
 
 ```sh
 node --version
