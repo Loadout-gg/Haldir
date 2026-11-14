@@ -1,6 +1,6 @@
-# Haldir
+[![Haldir — Give AI a job. Keep control of its spending.](docs/assets/haldir-cover.jpg)](https://haldir.ldt.sh/)
 
-**Give AI a job. Keep control of its spending.**
+# Haldir
 
 Haldir is a research-agent prototype that separates permission to do a job from permission to spend money. A person reviews the job, spending cap, expiry and allowed recipients. The agent works within that mandate; a request in an email cannot grant it new spending authority.
 
@@ -13,6 +13,12 @@ Built for **NEAR HACKATHON 2026**.
 An agent checking a supplier may need to buy company records or background research. Giving it a wallet is too much authority; asking the user to approve every step defeats the point of delegation. A budget alone is not enough either: an unauthorized payment can still be cheap.
 
 Haldir makes the boundary explicit: **enough money does not mean permission to pay.**
+
+## See the boundary in action
+
+[![Actual Haldir scripted-demo capture: a 2 TEST request to an excluded recipient is blocked while 22 TEST remains available. The visible notice identifies the workflow as simulated.](docs/assets/scripted-demo.png)](docs/assets/scripted-demo.png)
+
+*Captured from the public scripted demo. Fictional data and simulated events, not live payments. Click the image to inspect the full-size interface, or [try the same walkthrough](docs/DEMO.md).*
 
 ## One job, a visible result, bounded spending
 
@@ -29,6 +35,10 @@ The target product journey follows a fictional supplier, **Northwind Print**. Th
 The scripted demo uses **30 TEST**, with illustrative purchases of **8** and **15**, an excluded request for **2**, and **7** left to recover. TEST is a fictional demonstration unit, not an instruction to fund a wallet or a claim that these transfers happened on a public network.
 
 ## Why NEAR is part of the mechanism
+
+[![Architecture illustration: an agent request passes through the NEAR mandate's recipient, cap, expiry and stop checks before a payment can proceed. Email content cannot grant permissions.](docs/assets/spending-boundary.png)](docs/ARCHITECTURE.md)
+
+*Mechanism illustration, not a transaction receipt. Read the [trust boundaries and implementation limits](docs/ARCHITECTURE.md).*
 
 The native implementation puts the spending boundary in a **NEAR smart contract**, separate from the model and the chat interface:
 
