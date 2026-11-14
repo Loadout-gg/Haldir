@@ -1,0 +1,57 @@
+{
+  "classification": "SYNTHETIC_TEST_INPUT_ONLY_NOT_DEPLOYMENT_OR_CHAIN_EVIDENCE",
+  "provenance": "Constructed only from public test contracts and public PINS. No private manifest, runtime readback, account ownership, binary build or deployed state is asserted.",
+  "spec": {
+    "owner": "owner.testnet",
+    "factory": "factory.fixture.testnet",
+    "agent": "agent.fixture.testnet",
+    "job_label": "fixture",
+    "cap": "30",
+    "allowlist": [
+      "records.testnet",
+      "background.testnet"
+    ],
+    "operating_float": "2000000000000000000000000",
+    "create_gas": "300000000000000",
+    "allowance": "100000000000000000000000",
+    "bootstrap_public_key": "ed25519:CktRuQ2mttgRGkXJtyksdKHjUdc2C4TgDzyB98oEzy8",
+    "deadline_ns": "1794592800330000000"
+  },
+  "mandate": "j6e4de498d40cf322c88531aa6cb89255.factory.fixture.testnet",
+  "job_expires_at": "2026-11-13T18:00:00.330Z",
+  "artifacts": {
+    "mandate": {
+      "code_hash": "DaKQUSsQpzJAP1AbEzmJszLYgkmrbuAr9FehzQhPDXLi"
+    },
+    "factory": {
+      "code_hash": "GefZCjYjTp1LZLiSbeVYwQg2tFanhki3c5x5J3xchXUV"
+    }
+  },
+  "runtime_binding": {
+    "ownerId": "owner.testnet",
+    "signerId": "agent.fixture.testnet",
+    "mandateId": "j6e4de498d40cf322c88531aa6cb89255.factory.fixture.testnet",
+    "networkId": "testnet",
+    "publicKey": "ed25519:8qbHbw2BbbTHBW1sbeqakYXVKRQM8Ne7pLK7m6CVfeR",
+    "maxAllowanceAtomic": "100000000000000000000000",
+    "codeHash": "DaKQUSsQpzJAP1AbEzmJszLYgkmrbuAr9FehzQhPDXLi"
+  },
+  "protocol": {
+    "gas_price": "100000000",
+    "protocol_config": {
+      "chain_id": "testnet",
+      "protocol_version": 88,
+      "runtime_config": {
+        "storage_amount_per_byte": "10000000000000000000",
+        "min_gas_purchase_price": "100000000",
+        "account_creation_charge": "10000000000000000000",
+        "transaction_costs": {
+          "storage_usage_config": {
+            "num_bytes_account": 100,
+            "num_extra_bytes_record": 40
+          }
+        }
+      }
+    }
+  }
+}

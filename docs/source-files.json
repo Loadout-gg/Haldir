@@ -347,6 +347,12 @@
       "gitMode": "100644"
     },
     {
+      "path": "deployment/haldir-testnet/manifest.synthetic-fixture.json",
+      "bytes": 2002,
+      "sha256": "5f1077a24f32e1d78e7023e0c563224c54ae48b64aec92547eb148f2f3e80159",
+      "gitMode": "100644"
+    },
+    {
       "path": "deployment/haldir-testnet/manifest.test.mjs",
       "bytes": 4015,
       "sha256": "d16abfbf86fbabf4c45739577a1f0c983079eedc491c27a2fa1268b35da7a0be",
@@ -408,8 +414,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 9233,
-      "sha256": "39b0c984f0c0cfa4fbf66246acd7b139d7d619093089ef3fbd3c238d45bfe3d6",
+      "bytes": 13915,
+      "sha256": "df52fd25143da9df1f7a0d2391db0224d769e9899a093ba449e9b461685070eb",
       "gitMode": "100644"
     },
     {
@@ -1661,6 +1667,12 @@
       "gitMode": "100644"
     },
     {
+      "path": "tests/server/closed-runtime.test.mjs",
+      "bytes": 6167,
+      "sha256": "5bf0338a2143baea2aee68476c6089a832d753561e4df15028e3b8dedbaa0346",
+      "gitMode": "100644"
+    },
+    {
       "path": "tests/server/fixture.test.mjs",
       "bytes": 4494,
       "sha256": "108f7ad6375fc4ae240bc4eaa15e0d5a44074cc960364c19f2ebe229f36a1a09",
@@ -1763,5 +1775,5 @@
       "gitMode": "100644"
     }
   ],
-  "totalFiles": 294
+  "totalFiles": 296
 }

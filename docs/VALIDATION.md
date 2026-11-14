@@ -70,6 +70,45 @@ The test run covers:
 
 External RPC, wallet, model and payment outcomes in these tests are synthetic. A receipt-shaped fixture is not a public-chain receipt. This focused result must not be combined with overlapping historical totals to produce a larger unique-test count.
 
+### Public-only backend and closed-runtime reproduction
+
+This source-only path needs **only the root lockfile installation**; it does not need the frontend installation, a UI build, WASM, Chrome, private operator records or credentials. Use the exact public baseline `0430aeaf082777f08b83795a46c984b9cfca8d8f` plus the reproduction correction containing this section; do not silently substitute a newer branch. The correction supplies the previously missing `deployment/haldir-testnet/manifest.synthetic-fixture.json` without changing the consuming tests or product guards.
+
+```sh
+# In your isolated checkout, with Node 26.13.1 selected:
+node --version
+npm --version
+npm ci --ignore-scripts --no-audit --no-fund
+mkdir -p test-results/portable-home test-results/portable-tmp
+env -i PATH="$PATH" HOME="$PWD/test-results/portable-home" \
+  TMPDIR="$PWD/test-results/portable-tmp" \
+  node --test --test-reporter=tap --test-timeout=120000 \
+  qualification/native-wallet/*.test.mjs \
+  tests/server/near-owner-operations.test.mjs \
+  tests/server/owner-preparation-retry.test.mjs \
+  tests/server/fixture.test.mjs \
+  tests/agent/two-source-run-job.test.mjs \
+  tests/server/near-manifest.test.mjs \
+  tests/server/near-mandate-status.test.mjs \
+  tests/server/closed-runtime.test.mjs \
+  tests/server/app.test.mjs \
+  deployment/haldir-public/server.test.mjs \
+  deployment/haldir-public/trusted-composition.test.mjs
+```
+
+The added manifest is **synthetic test input only**, constructed from the public test contracts and existing public artifact hash pins. Its generic accounts, public keys, protocol responses and historical fixture clock are not deployment records, funded accounts, authorization or live chain evidence. It contains no WASM and does not replace a build prerequisite. Existing admission, ownership, expiry, scope, budget and malformed-evidence assertions remain unchanged.
+
+`closed-runtime.test.mjs` exercises the real public/preview executables' refusal before network/listening, and the public executable's missing generated-UI-receipt gate. It also starts the actual public server factory and default closed composition on ephemeral loopback using an in-memory local repository and explicitly synthetic static HTML. Health responds; unauthenticated creation is rejected; model/signing/financial capabilities remain disabled. This is **closed local startup**, not successful hosted `main.mjs` startup, a compiled interface, wallet authentication or a financial journey. The test does not generate a UI receipt to bypass the hosted gate.
+
+The root `npm ci --ignore-scripts` path was exercised with a fresh private npm cache under Node `26.13.1` / npm `11.20.0`: 248 packages installed, followed by actual SDK/module imports and these local checks. Lifecycle scripts were disabled: esbuild and native add-on install hooks were not executed. This is a **scripts-disabled lockfile installation**, not a full lifecycle clean install, frontend installation/build, WASM build, Sandbox or live end-to-end qualification. The frontend's separate npm `12.2.2` requirement remains unchanged. Network/child-process denial controls and a macOS loopback-only sandbox were used for the recorded qualification; the `env -i` command itself is environment isolation, not an OS network sandbox.
+
+Do not broaden this selection to `node --test` or recursive test globs and assume the same prerequisites. In particular:
+
+- `tests/server/near-receipts.test.mjs` and `tests/vendor/payment-proof.test.mjs` retain assertions against `target/mandate-factory/storage-fix/final-sandbox.log`, a historical capture not distributed here. Do not invent that capture or present synthetic data as its replacement. Their historical checks are not part of the public-only command above.
+- `tests/vendor/payment-proof.test.mjs` also requires the explicitly installed Sandbox `2.14.0` binary and generated mandate WASM for its real local-chain case. A dependency import alone does not provide either.
+- `deployment/haldir-testnet/manifest.test.mjs` and the advanced operational suites require genuine generated mandate/factory WASM. The manifest suite registers its tests but fails while loading those inputs, before exercising contract-manifest validation; other suites may fail during collection. These are separate build-dependent gates, not portable source-only tests.
+- Historical owner-signing/operator entrypoints under `qualification/owner-ui/` and `qualification/agent-api/` are not this startup path. Their private approval/signature prerequisites are not supplied by a clone. Generic private-path names in synthetic tests do not mean those records are included or required by this selection.
+
 ## 3. Execute the contracts in local NEAR Sandbox
 
 This path additionally needs Rust/Cargo **1.99.1**, the `wasm32-unknown-unknown` target and **cargo-near 0.23.0**. macOS needs Xcode Command Line Tools. The recorded local setup used Sandbox **2.14.0**. Initial builds may download dependencies and the Sandbox binary.
