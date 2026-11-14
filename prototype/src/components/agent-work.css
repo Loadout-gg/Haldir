@@ -1,0 +1,14 @@
+/* Approved inline response anatomy. No new surface, animation or progress clock. */
+.preview-page .agent-work { padding-block: 4px; color: var(--foreground); }
+.preview-page .agent-work > :is(h2,h3) { margin: 0 0 16px; font-size: 16px; line-height: 24px; font-weight: 600; }
+.preview-page .agent-work-steps { list-style: none; margin: 0; padding: 0; }
+.preview-page .agent-work-steps > li { position: relative; display: flex; align-items: flex-start; gap: 12px; padding-block: 4px; color: var(--muted-foreground); }
+.preview-page .agent-work-steps > li:not(:last-child)::after { content: ''; position: absolute; inset-inline-start: 5px; top: 24px; bottom: -4px; border-inline-start: 1px solid var(--border); }
+.preview-page .agent-step-mark { flex: 0 0 12px; color: var(--haldir-forest); font-size: 12px; line-height: 20px; text-align: center; }
+.preview-page .agent-work-steps p { margin: 0; }
+.preview-page .agent-work .agent-work-current { color: var(--haldir-forest); font-weight: 500; }
+.preview-page .agent-work[data-tone="warning"] .agent-work-current,
+.preview-page .agent-work[data-tone="warning"] .agent-work-current .agent-step-mark { color: var(--haldir-warning); }
+.preview-page .agent-work-notice { margin-top: 16px; color: var(--muted-foreground); font-size: 12px; line-height: 20px; }
+.preview-page .agent-work-results { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+.preview-page .agent-work-results > p { margin-block: 0 8px; }

@@ -16,7 +16,7 @@ Choose the proof you want. These paths have different prerequisites and establis
 
 Use **Node 26.13.1**. The frontend declares **npm 12.2.2**. Check your versions before installing. Root and frontend lockfiles are separate.
 
-The full source snapshot must contain `prototype/`, `src/`, `tests/`, `qualification/mandate-contract/`, `qualification/mandate-factory/` and `qualification/native-wallet/`. If your checkout contains only the initial probe, it is an incomplete application snapshot; changing credentials will not fix that.
+This release includes `prototype/`, `src/`, `tests/`, `qualification/mandate-contract/`, `qualification/mandate-factory/` and `qualification/native-wallet/`. Only the optional cloud command helper `deployment/haldir-cloud/packet.py` and its test `deployment/haldir-cloud/test_packet.py` are withheld pending portable account configuration. Do not invoke that helper from this release. See [source provenance](SOURCE-PROVENANCE.md) and [portability notes](SOURCE-PORTABILITY.md).
 
 ```sh
 node --version
@@ -53,12 +53,11 @@ node --test --test-timeout=120000 \
   qualification/native-wallet/*.test.mjs \
   tests/server/near-owner-operations.test.mjs \
   tests/server/owner-preparation-retry.test.mjs \
-  tests/server/two-source-contract.test.mjs \
   tests/server/fixture.test.mjs \
   tests/agent/two-source-run-job.test.mjs
 ```
 
-**Execution recorded on 14 November 2026:** 386 tests passed, zero failures, cancellations or skips. Node was `v26.13.1`; the existing dependency installation was reused. The shell npm version was `11.20.0`, not the frontend's declared `12.2.2`; npm installation/build was not part of this run.
+**Historical execution, not a rerun of this public snapshot:** a prior local run recorded 386 passing tests under Node `v26.13.1` using existing dependencies. That run also included `tests/server/two-source-contract.test.mjs`, which is not part of this selected publication, so its total is not attributed to the command above. The shell npm version was `11.20.0`, not the frontend's declared `12.2.2`; dependency installation/build was not part of that run. This publication performs byte-integrity and source scans, not a fresh application qualification.
 
 The test run covers:
 
@@ -109,7 +108,7 @@ These commands were inspected against the existing setup but **were not rerun in
 
 `deployment/haldir-public/operational-entrypoint.test.mjs` and `operational-faults.test.mjs` exercise the composed runtime with synthetic external adapters. Installed-Chrome tests such as `prototype/tests/operational-readout-chrome.test.mjs` and `operational-runtime-chrome.test.mjs` exercise narrower browser/runtime surfaces.
 
-Some advanced harnesses still depend on installed Chrome, local WASM outputs, private temporary evidence directories or development-specific paths. They are **not the portable quickstart**. Do not copy an operator's absolute paths or enable live signing to satisfy a missing harness prerequisite.
+Personal absolute-path defaults were removed by the scoped [portability changes](SOURCE-PORTABILITY.md). Advanced harnesses still require installed Chrome, local WASM outputs or separately supplied historical task-panel `before/` metrics. They are **not the portable quickstart**. Do not copy an operator's absolute paths or enable live signing to satisfy a missing harness prerequisite.
 
 A scoped reader test at narrow viewport widths is not full-application mobile acceptance. A virtual HTTPS relay is not proof of the deployed TLS/cookie boundary. Local SQLite success is not intended-host Firestore acceptance.
 

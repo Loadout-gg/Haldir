@@ -1,0 +1,22 @@
+# Public source export only; private audit remains in the original workspace.
+.hermes/
+.git/
+node_modules/
+target/
+dist/
+.env
+.env.*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+test-results/
+playwright-report/
+.taste-skill/
+deployment/**/stage/
+deployment/**/recovery/
+deployment/**/ui/
+deployment/**/runtime-*/
+deployment/**/*evidence*/
+deployment/**/receipts/
+.DS_Store

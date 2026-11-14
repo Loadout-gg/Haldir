@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Owner signing · Local qualification</title>
+  <style>
+    /* Operate: a bounded review sheet, not a product dashboard.
+       Neutral daylight surface, system type, data in monospace.
+       Review the fixed mainnet payload before separate connect/sign controls.
+       No marketing, generation controls, or submission affordances. */
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #1b2635; background: #f3f5f7; line-height: 1.5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 66rem; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    header { margin-bottom: 1.5rem; }
+    h1 { font-size: 1.75rem; line-height: 1.25; margin: .4rem 0 .6rem; }
+    h2 { font-size: 1.125rem; margin: 0 0 1rem; }
+    p { max-width: 72ch; margin: .5rem 0; }
+    .context { font-size: .875rem; font-weight: 650; color: #405269; }
+    .caution { background: #fff3d9; color: #59400c; border: 1px solid #ba944c; padding: .85rem 1rem; margin: 1.25rem 0; }
+    .sheet { background: #fff; border: 1px solid #c7cfd8; }
+    section { padding: 1.5rem; }
+    section + section { border-top: 1px solid #d8dee5; }
+    dl { display: grid; grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr); gap: .6rem 1rem; margin: 0; }
+    dt { color: #465568; }
+    dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .875rem; }
+    code { overflow-wrap: anywhere; }
+    .muted { color: #465568; font-size: .925rem; }
+    .state { font-weight: 650; margin: 0 0 1rem; padding: .75rem 1rem; border: 1px solid #c7cfd8; background: #f3f5f7; }
+    .state[data-kind="blocked"] { color: #743315; background: #fff3ed; border-color: #c99780; }
+    .state[data-kind="ready"] { color: #195432; background: #edf7ef; border-color: #8caf97; }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .925rem; text-align: left; }
+    caption { text-align: left; color: #465568; margin: 0 0 .5rem; }
+    th, td { padding: .65rem .6rem; vertical-align: top; border-bottom: 1px solid #d8dee5; }
+    th { font-weight: 650; background: #f3f5f7; }
+    td { overflow-wrap: anywhere; }
+    td:first-child { min-width: 9rem; }
+    .numeric { font-variant-numeric: tabular-nums; }
+    details { margin-top: 1rem; }
+    summary { cursor: pointer; color: #183f75; font-weight: 600; padding: .5rem 0; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #f3f5f7; padding: 1rem; max-height: 28rem; overflow-y: auto; margin: .5rem 0 0; }
+    .buttons { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.25rem 0 .75rem; }
+    button { font: inherit; font-weight: 600; border: 1px solid #183f75; border-radius: .3rem; padding: .7rem 1rem; min-height: 2.75rem; background: #fff; color: #183f75; cursor: pointer; }
+    button.primary { background: #183f75; color: #fff; }
+    button:hover:not(:disabled) { background: #eaf0f8; }
+    button.primary:hover:not(:disabled) { background: #102d56; }
+    button:active:not(:disabled) { transform: translateY(1px); }
+    button:disabled { background: #e8ecf0; color: #5b6777; border-color: #bcc5d0; cursor: not-allowed; }
+    :focus-visible { outline: 3px solid #246ec4; outline-offset: 3px; }
+    #notice { min-height: 1.5rem; overflow-wrap: anywhere; }
+    footer { margin: 1rem 0 0; color: #465568; font-size: .875rem; }
+    noscript p { padding: 1rem; background: #fff3d9; }
+    [hidden] { display: none !important; }
+    @media (max-width: 40rem) {
+      main { padding: 1.25rem .75rem 2rem; }
+      section { padding: 1.1rem; }
+      dl { grid-template-columns: minmax(0, 1fr); gap: .15rem; }
+      dd { margin-bottom: .65rem; }
+      .buttons { flex-direction: column; }
+      button { width: 100%; }
+      th, td { padding: .6rem .4rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { button:active:not(:disabled) { transform: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="context">Local qualification · NEAR mainnet · Not testnet</p>
+      <h1>Review owner signing</h1>
+      <p>This utility reviews one fixed agent-creation intent. A signature can be verified and saved to the local server only. Submission is not enabled.</p>
+      <p class="caution"><strong>Qualification boundary.</strong> SDK audit findings are under review. Do not connect a real wallet. This is not a production interface.</p>
+    </header>
+    <noscript><p>JavaScript is required to load the local intent. Signing remains disabled.</p></noscript>
+    <p id="load-status" role="status" aria-live="polite">Loading the fixed local intent…</p>
+    <div class="sheet" id="review" hidden>
+      <section aria-labelledby="owner-heading">
+        <h2 id="owner-heading">Owner &amp; intent</h2>
+        <p class="state" id="intent-state" role="status" aria-live="polite"></p>
+        <dl>
+          <dt>Expected owner</dt><dd><code id="owner-account"></code></dd>
+          <dt>Expected public key</dt><dd><code id="owner-key"></code></dd>
+          <dt>Intent</dt><dd><code id="intent-id"></code></dd>
+          <dt>Agent</dt><dd><code id="agent-id"></code></dd>
+          <dt>Expiry (UTC)</dt><dd><time id="expiry"></time></dd>
+          <dt>Authorization</dt><dd>NEP-366 delegate signature · agent_create</dd>
+        </dl>
+      </section>
+      <section aria-labelledby="policy-heading">
+        <h2 id="policy-heading">Frozen, zero-budget policy</h2>
+        <dl>
+          <dt>Policy</dt><dd id="policy-frozen"></dd>
+          <dt>Spending budgets</dt><dd id="policy-budgets" class="numeric"></dd>
+          <dt>Allowed actions</dt><dd id="policy-actions"></dd>
+          <dt>Allowed recipients</dt><dd id="policy-recipients"></dd>
+          <dt>Policy assets</dt><dd id="policy-assets"></dd>
+        </dl>
+        <p class="muted">Zero spending budgets do not mean zero attached deposit. The contract calls below include storage funding. This page never submits them.</p>
+      </section>
+      <section aria-labelledby="calls-heading">
+        <h2 id="calls-heading">Exact contract payload</h2>
+        <p>Receiver: <code id="receiver"></code></p>
+        <div class="table-wrap" role="region" aria-label="Function calls and exact amounts" tabindex="0">
+          <table>
+            <caption>Function calls, in signing order. Deposits are exact yoctoNEAR; gas is in gas units.</caption>
+            <thead><tr><th scope="col">Function</th><th scope="col">Gas</th><th scope="col">Attached deposit (yoctoNEAR)</th></tr></thead>
+            <tbody id="call-rows"></tbody>
+          </table>
+        </div>
+        <p>Total attached deposit: <code id="deposit-total" class="numeric"></code> yoctoNEAR.</p>
+        <details><summary>Inspect original intent &amp; call arguments</summary><pre id="payload"></pre></details>
+      </section>
+      <section aria-labelledby="signing-heading" id="signing-section">
+        <h2 id="signing-heading">Connect, then sign locally</h2>
+        <p>Connecting requests your account only: no access key, key export, migration, or transaction submission. The connected account must match the owner above on mainnet.</p>
+        <p>Connected account: <code id="connected-account">Not connected</code></p>
+        <div class="buttons">
+          <button type="button" id="connect" disabled aria-describedby="connect-help">Connect Meteor</button>
+          <button type="button" class="primary" id="sign" disabled aria-describedby="sign-help">Sign &amp; save locally</button>
+        </div>
+        <p id="connect-help" class="muted">Explicit account connection; no signature is requested by this button.</p>
+        <p id="sign-help" class="muted">Signing is blocked until the expected owner is connected and the fixed intent is fresh.</p>
+        <p id="notice" role="status" aria-live="polite" aria-atomic="true"></p>
+      </section>
+    </div>
+    <footer>No intent generation or refresh. No broadcast. No signature is stored in browser persistence.</footer>
+  </main>
+  <script type="module" src="/client.js"></script>
+</body>
+</html>

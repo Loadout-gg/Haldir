@@ -1,0 +1,113 @@
+{
+  "schema": "haldir-source-portability-path-delta-v1",
+  "frozenSelectedSourceManifestSha256": "850fa48f419af6db9af518ec580ab6789afc9e35653e0b03829797ab5869c175",
+  "changedFiles": [
+    {
+      "path": "prototype/tests/browser/brand-responsive-states.spec.ts",
+      "originalSha256": "f8af33639d80c552165a4641d216dd893dacd4d9576bd04f1d907d147bcc5763",
+      "derivedSha256": "2580ed623c06df121541ef78f107b98da464e84e5e9a8188e097e0664913c537",
+      "originalBytes": 5424,
+      "derivedBytes": 5467,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/brand-states.spec.ts",
+      "originalSha256": "f0b16b46c7c0eb182b8744421fd6cb291b5e0dbd85840fae13fd5031e5567f3e",
+      "derivedSha256": "1b53d5510207f10a45a7dfd25ddc13b1851d6aae0a21cd3932386205a6e9f5ca",
+      "originalBytes": 9242,
+      "derivedBytes": 9285,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/brand.spec.ts",
+      "originalSha256": "f35b450214f1f2e48437f81394cfab8f0af5a054bf7378986b7437b8f17edd6d",
+      "derivedSha256": "45ee7f9795a638f5f944872ebaeed24ad4c72890a6d1e1bad423109c7fb94039",
+      "originalBytes": 7383,
+      "derivedBytes": 7426,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/chat-box-exceptions.spec.ts",
+      "originalSha256": "120dcb3e182893df58ee37939554ed72301f07413d8f4c328a6f47eb199fbf98",
+      "derivedSha256": "1a00ad568a62d6784c49c16787811f940df0cb7127f4857962ce2636f7825111",
+      "originalBytes": 6563,
+      "derivedBytes": 6596,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/chat-box-journeys.spec.ts",
+      "originalSha256": "40b5b74dd4b6ef3d730eac45b9db0439e2fbc51df359cf1e309b46eba6b679ab",
+      "derivedSha256": "474b8685e4a7e15b6f9a253fba9fdd4b6b76ec5cf008f9fc30bd2e854bf55ca2",
+      "originalBytes": 18812,
+      "derivedBytes": 18845,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/copy-fixes.spec.ts",
+      "originalSha256": "b6184659b8640afd837e7ffadca257b50a7961861f207b58b11d03ba114ec3ab",
+      "derivedSha256": "61a2f747351cc676a04d20b37718903b0f9f3631d0b66384fca57c3e31795007",
+      "originalBytes": 4397,
+      "derivedBytes": 4446,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/expanded.spec.ts",
+      "originalSha256": "eef6ed79fa28ca651bf507bcc3a751d646adc02ac33c3521eda3b4d5e58f9e79",
+      "derivedSha256": "d5330d7b4aa6b9e660bfbdbda3e0146f4717f1d3517b288b585a445b365f83d9",
+      "originalBytes": 8570,
+      "derivedBytes": 8628,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/f2-stop-copy.spec.ts",
+      "originalSha256": "4e06abfcdc018209d57e0f1eeaf7c99200421d6b7a4a82be26c1c2424d71e817",
+      "derivedSha256": "20a7570f8317d9cd6550a871b8d457012df8ae1e9a5294e5ffc733b2a79bcff7",
+      "originalBytes": 9470,
+      "derivedBytes": 9519,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/interactive.spec.ts",
+      "originalSha256": "2d4bb273edbfa8f2adf217c48264b41db6965a36b3682bc0ada4a015682c03c1",
+      "derivedSha256": "087cedd139752c8ca9225d74271360d7f9a8ff85dfc5ffbc100bdba00b979525",
+      "originalBytes": 16107,
+      "derivedBytes": 16165,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/task-panel-refinement.spec.ts",
+      "originalSha256": "7065869d4d2c917f941e7460cd7e3dd4f9f8010cf1bf4d7199b10947615c0aa2",
+      "derivedSha256": "b42016c274d67184341b4a34f1a5118402b438646f0255bf8bbe5525ae540977",
+      "originalBytes": 17469,
+      "derivedBytes": 17512,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/browser/ux-restoration.spec.ts",
+      "originalSha256": "0bf05c0b5de8f6772d1ea13111bee695d2b1ad6633eb70dcf64b314542c58e3c",
+      "derivedSha256": "d06875dab2e79144eb1021dfc159ae8659c0e708d6ebb961c624e85022edd9d9",
+      "originalBytes": 18622,
+      "derivedBytes": 18665,
+      "mode": "100644"
+    },
+    {
+      "path": "prototype/tests/operational-runtime-chrome.test.mjs",
+      "originalSha256": "a22c93d3ed378c35fc770ab42a4346bc74deaaf113890c86ac2e75f223a3a278",
+      "derivedSha256": "7ad435a7d1507a0228d3839094e167c8f20a1634c1ce8c4b1ba777b36a76cd10",
+      "originalBytes": 26167,
+      "derivedBytes": 26147,
+      "mode": "100644"
+    },
+    {
+      "path": "qualification/near-ai-model.test.mjs",
+      "originalSha256": "b7da861818640d0029ba94ac31b60dececba71da644952a21eb84d15dda961b5",
+      "derivedSha256": "e0d6e6623e0d48d9fa7c81b6cc2ccbe92b0683dbd0d1ec7792d4f45c536c182a",
+      "originalBytes": 12082,
+      "derivedBytes": 12164,
+      "mode": "100644"
+    }
+  ],
+  "omissions": [],
+  "originalInputSourceMembers": 278,
+  "sourceDeltaScope": "test paths and temporary-directory helper only; no framework/runtime guards or scanner policy changes"
+}

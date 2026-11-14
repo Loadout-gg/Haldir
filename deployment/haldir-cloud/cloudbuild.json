@@ -1,0 +1,29 @@
+{
+  "steps": [
+    {
+      "id": "build-official-node-linux-amd64",
+      "name": "gcr.io/cloud-builders/docker",
+      "args": ["build", "--platform=linux/amd64", "--pull", "--no-cache", "-t", "europe-west1-docker.pkg.dev/$PROJECT_ID/haldir-preview/auth-preview:$BUILD_ID", "."],
+      "timeout": "480s"
+    },
+    {
+      "id": "runtime-and-production-sdk-check",
+      "name": "gcr.io/cloud-builders/docker",
+      "args": ["run", "--rm", "--network=none", "--read-only", "--cap-drop=ALL", "--entrypoint=node", "europe-west1-docker.pkg.dev/$PROJECT_ID/haldir-preview/auth-preview:$BUILD_ID", "--input-type=module", "-e", "import assert from 'node:assert/strict'; import fs from 'node:fs'; assert.equal(process.versions.node,'26.13.1'); assert.equal(process.platform,'linux'); assert.equal(process.arch,'x64'); assert.notEqual(process.getuid(),0); for (const [name,version] of [['near-api-js','7.4.0'],['@google-cloud/firestore','9.4.1']]) { assert.equal(JSON.parse(fs.readFileSync('/app/node_modules/'+name+'/package.json')).version,version); await import(name); } for (const p of ['/app/.hermes','/app/target','/app/qualification','/app/src/server/orders.mjs','/app/src/server/app.mjs']) assert.equal(fs.existsSync(p),false); console.log('LINUX_AMD64_NODE_26_13_1_PRODUCTION_SDK_IMPORTS_OK_NOT_LIVE_READINESS');"],
+      "timeout": "60s"
+    },
+    {
+      "id": "unconfigured-bootstrap-must-fail-closed",
+      "name": "gcr.io/cloud-builders/docker",
+      "entrypoint": "bash",
+      "args": ["-ceu", "set +e; result=$$(docker run --rm --network=none --read-only --cap-drop=ALL europe-west1-docker.pkg.dev/$PROJECT_ID/haldir-preview/auth-preview:$BUILD_ID 2>&1); code=$$?; set -e; test \"$$code\" -ne 0; test \"$$result\" = EXACT_HTTPS_ORIGIN_REQUIRED; printf '%s\\n' UNCONFIGURED_BOOTSTRAP_REJECTED_NOT_CONFIGURED_STARTUP;"],
+      "timeout": "30s"
+    }
+  ],
+  "images": ["europe-west1-docker.pkg.dev/$PROJECT_ID/haldir-preview/auth-preview:$BUILD_ID"],
+  "serviceAccount": "projects/loadout-haldir-demo/serviceAccounts/haldir-build@loadout-haldir-demo.iam.gserviceaccount.com",
+  "timeout": "600s",
+  "queueTtl": "120s",
+  "options": {"logging": "CLOUD_LOGGING_ONLY", "diskSizeGb": "10"},
+  "tags": ["haldir-auth-only", "financial-actions-absent", "linux-amd64"]
+}

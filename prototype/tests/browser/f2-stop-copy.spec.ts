@@ -1,0 +1,140 @@
+import { fileURLToPath } from 'node:url'
+import { test, expect, type Page, type Locator } from '@playwright/test'
+const evidence = process.env.HALDIR_EVIDENCE_DIR ? `${process.env.HALDIR_EVIDENCE_DIR}/f2-regressions` : fileURLToPath(new URL('../../../test-results/f2-regressions', import.meta.url))
+const approved = 'Background research · Not started · Task stopped'
+const pending = 'Background research · Not started'
+const conversation = (page: Page) => page.getByRole('region', { name: 'Conversation', exact: true })
+const panel = (page: Page) => page.getByRole('complementary', { name: 'Working bar' })
+async function control(page: Page, name: string) {
+  const controls = page.getByRole('group', { name: 'Demo controls' })
+  if (await controls.getAttribute('open') === null) await page.getByText('Demo controls', { exact: true }).click()
+  await controls.getByRole('button', { name, exact: true }).click()
+}
+async function activate(page: Page) {
+  await page.goto('/demo')
+  await page.getByRole('textbox', { name: 'Your message' }).fill('budget 30; expiry 2026-11-12T18:00')
+  await page.getByRole('textbox', { name: 'Your message' }).press('Enter')
+  await expect(page.getByRole('region', { name: 'Spending review', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Authorize mandate' }).click()
+  await control(page, 'Confirm funding')
+}
+async function wording(page: Page, text: string) {
+  for (const surface of [panel(page)]) {
+    await expect(surface.getByText(text, { exact: true })).toBeVisible()
+    await expect(surface.getByText(text === approved ? pending : approved, { exact: true })).toHaveCount(0)
+    await expect(surface.getByRole('article', { name: 'Company records' })).toContainText('Paid · Evidence received · 8 TEST')
+  }
+  await expect(conversation(page).getByRole('article', { name: 'Company records', exact: true })).toContainText('Paid · Evidence received · 8 TEST')
+  await expect(conversation(page).getByRole('article', { name: 'Background research', exact: true })).toHaveCount(0)
+}
+async function snap(page: Page, file: string) {
+  await page.locator('details.demo-controls').evaluate(el => (el as HTMLDetailsElement).open = false)
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.screenshot({ path: `${evidence}/${file}.png`, animations: 'disabled' })
+}
+async function retained(page: Page, surface: Locator, delivery = 'Received') {
+  await surface.getByRole('button', { name: /^(?:Open company records receipt|Open receipt — company records)$/ }).click()
+  const receipt = page.getByRole('dialog', { name: 'Company records receipt' })
+  await expect(receipt).toBeVisible()
+  await expect(receipt).toContainText('DEMO-RECORDS-01')
+  await expect(receipt).toContainText('8 TEST')
+  await expect(receipt.locator('.terms > div').filter({ has: page.getByText('Delivery', { exact: true }) }).locator('dd')).toHaveText(delivery)
+  await page.keyboard.press('Escape')
+}
+let errors: string[] = []
+test.beforeEach(async ({ page }) => {
+  errors = []
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.route('**/*', route => route.request().url().startsWith(`${new URL(test.info().project.use.baseURL!).origin}/`) ? route.continue() : route.abort())
+  page.on('pageerror', e => errors.push(String(e)))
+  page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()) })
+})
+test.afterEach(() => { expect(errors).toEqual([]) })
+test('F2 early stop changes both shared surfaces only on confirmation, retains first result through final closure and mobile panel', async ({ page }) => {
+  await activate(page)
+  await control(page, 'S03 · Deliver company records')
+  await wording(page, pending)
+  await conversation(page).getByRole('button', { name: 'Stop new spending' }).click()
+  await wording(page, pending)
+  await expect(panel(page).locator('.panel-status').filter({ hasText: /^Stop requested$/ })).toBeVisible()
+  await control(page, 'Confirm stop')
+  await wording(page, approved)
+  await snap(page, '01-early-stop-confirmed-desktop')
+  await conversation(page).getByRole('button', { name: 'Check prior payments' }).click()
+  await wording(page, approved)
+  await conversation(page).getByRole('button', { name: 'Request return of 22 TEST' }).click()
+  await wording(page, approved)
+  await control(page, 'Make return uncertain')
+  await expect(conversation(page).getByRole('status')).toHaveText("We're still waiting for confirmation that your remaining funds have been returned. You don't need to send another request.")
+  await control(page, 'Confirm return')
+  await wording(page, approved)
+  await expect(panel(page).locator('.panel-status').filter({ hasText: /^Spending permission closed$/ })).toBeVisible()
+  await expect(panel(page).getByTestId('ledger')).toHaveText('Spent8 TESTReserved0 TESTAvailable0 TESTRecovered22 TEST')
+  await retained(page, panel(page))
+  await conversation(page).getByRole('button', { name: /^(?:Open company records evidence|Open evidence — company records)$/ }).click()
+  await expect(page.getByRole('dialog', { name: 'Company records evidence' })).toContainText('Linked purchase: DEMO-RECORDS-01 · 8 TEST.')
+  await page.keyboard.press('Escape')
+  await snap(page, '02-closed-desktop')
+  await panel(page).getByRole('button', { name: 'Hide panel', exact: true }).click()
+  await page.setViewportSize({ width: 390, height: 844 })
+  const trigger = page.getByRole('button', { name: 'Task panel', exact: true })
+  await expect(panel(page)).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Show task panel', exact: true })).toBeVisible()
+  await trigger.focus()
+  await expect(trigger).toBeFocused()
+  await trigger.click()
+  const sheet = panel(page)
+  const mobile = sheet
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(mobile.getByText(approved, { exact: true })).toBeVisible()
+  await expect(mobile.getByRole('article', { name: 'Company records' })).toContainText('Paid · Evidence received · 8 TEST')
+  await mobile.getByText(approved, { exact: true }).scrollIntoViewIfNeeded()
+  expect(await page.evaluate(() => [innerWidth, innerHeight, devicePixelRatio, document.documentElement.scrollWidth])).toEqual([390, 844, 1, 390])
+  await snap(page, '03-closed-mobile-workingbar')
+  await retained(page, mobile)
+  await expect(sheet).toBeVisible()
+  await mobile.getByRole('button', { name: 'Hide panel', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Show task panel', exact: true })).toBeFocused()
+})
+test('F2 existing background payment remains pending and reserved after confirmed stop', async ({ page }) => {
+  await activate(page)
+  await control(page, 'S03 · Deliver company records')
+  await control(page, 'S05 · Two requests together')
+  await conversation(page).getByRole('button', { name: 'Stop new spending' }).click()
+  await control(page, 'Confirm stop')
+  await conversation(page).getByRole('button', { name: 'Check prior payments' }).click()
+  for (const surface of [panel(page)]) {
+    await expect(surface.getByRole('article', { name: 'Background research' })).toContainText('Payment pending · Funds reserved · 15 TEST')
+    await expect(surface.getByText(approved, { exact: true })).toHaveCount(0)
+    await expect(surface.getByRole('button', { name: 'Check background research payment' })).toBeVisible()
+  }
+  await expect(conversation(page).getByRole('button', { name: 'Request return of 7 TEST' })).toBeDisabled()
+  await expect(panel(page).getByTestId('ledger')).toHaveText('Spent8 TESTReserved15 TESTAvailable7 TESTRecovered0 TEST')
+  await snap(page, '04-started-background-pending')
+})
+test('F2 started paid missing-delivery order stays recoverable on same order after closure', async ({ page }) => {
+  await activate(page)
+  await control(page, 'Start company records payment')
+  await control(page, 'Confirm company records payment')
+  await conversation(page).getByRole('button', { name: 'Stop new spending' }).click()
+  await control(page, 'Confirm stop')
+  await conversation(page).getByRole('button', { name: 'Check prior payments' }).click()
+  await conversation(page).getByRole('button', { name: 'Request return of 22 TEST' }).click()
+  await control(page, 'Confirm return')
+  for (const surface of [panel(page)]) {
+    await expect(surface.getByRole('article', { name: 'Company records' })).toContainText('Paid · Delivery missing · 8 TEST')
+    await expect(surface.getByRole('button', { name: 'Recover company records delivery' })).toBeVisible()
+    await expect(surface.getByText(approved, { exact: true })).toBeVisible()
+  }
+  await retained(page, panel(page), 'Awaiting data')
+  await snap(page, '05-closed-paid-missing-delivery')
+  await panel(page).getByRole('button', { name: 'Recover company records delivery' }).click()
+  await expect(panel(page).getByRole('article', { name: 'Company records' })).toContainText('Paid · Delivery recovery requested · 8 TEST')
+  await retained(page, panel(page), 'Retrieval requested')
+  await control(page, 'Deliver company records response')
+  await retained(page, panel(page))
+  await conversation(page).getByRole('button', { name: /^(?:Open company records evidence|Open evidence — company records)$/ }).click()
+  await expect(page.getByRole('dialog', { name: 'Company records evidence' })).toContainText('Linked purchase: DEMO-RECORDS-01 · 8 TEST.')
+  await page.keyboard.press('Escape')
+  await expect(panel(page).getByTestId('ledger')).toHaveText('Spent8 TESTReserved0 TESTAvailable0 TESTRecovered22 TEST')
+})

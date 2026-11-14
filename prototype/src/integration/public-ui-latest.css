@@ -1,0 +1,42 @@
+/* Public API details only; shared composition is owned by App.css. */
+[data-public-testnet] .public-panel[hidden] { display: none; }
+[data-public-testnet] .public-review { min-width: 0; }
+[data-public-testnet] .public-mandate-card { min-width: 0; }
+[data-public-testnet] .public-mandate-card .terms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+[data-public-testnet] .public-mandate-card .terms > div { display: block; min-width: 0; }
+[data-public-testnet] .public-mandate-card dt { color: var(--muted-foreground); font-size: 12px; line-height: 18px; }
+[data-public-testnet] .public-mandate-card dd { margin: 4px 0 0; overflow-wrap: anywhere; }
+[data-public-testnet] .public-recipients { display: grid; gap: 12px; min-width: 0; }
+[data-public-testnet] .public-recipient { min-width: 0; }
+[data-public-testnet] .public-recipient > p { margin-block: 8px; }
+[data-public-testnet] .public-recipient details { margin-top: 8px; }
+[data-public-testnet] .public-enforcement { padding-top: 16px; border-top: 1px solid var(--border); }
+[data-public-testnet] .public-enforcement p,
+[data-public-testnet] .public-boundaries p { margin-top: 12px; }
+[data-public-testnet] .public-secondary { color: var(--muted-foreground); font-size: 12px; line-height: 18px; }
+[data-public-testnet] .public-message-input { border: 0; box-shadow: none; background: transparent; padding-inline: 16px; }
+[data-public-testnet] .public-composer-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px 0; }
+[data-public-testnet] .public-composer-tools > span { display: inline-flex; align-items: center; gap: 8px; }
+[data-public-testnet] .public-composer-tools svg { width: 16px; height: 16px; }
+[data-public-testnet] .public-source-context { padding: 12px; border: 1px dashed var(--muted-foreground); border-radius: 14px; }
+[data-public-testnet] .public-source-context p { margin-top: 8px; }
+[data-public-testnet] .public-discard { padding: 12px; border: 1px solid var(--border); border-radius: 14px; }
+[data-public-testnet] .public-discard .action-row { margin-top: 12px; }
+[data-public-testnet] .public-task-context { overflow-wrap: anywhere; }
+[data-public-testnet] .public-task-context summary { margin-block: 12px; }
+[data-public-testnet] .public-task-context h3 { font-weight: 600; }
+[data-public-testnet] .public-activity { list-style: none; padding: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+[data-public-testnet] .public-activity li { padding: 12px; }
+[data-public-testnet] .public-activity li + li { border-top: 1px solid var(--border); }
+[data-public-testnet] .public-result-summary { padding-block: 12px; border-bottom: 1px solid var(--border); }
+[data-public-testnet] .public-result-summary p { margin-bottom: 8px; }
+[data-public-testnet] .public-activation { min-width: 0; border: 1px solid var(--border); }
+[data-public-testnet] .public-activation-details > summary { padding: 12px 16px; border: 1px solid var(--border); border-radius: 14px; }
+[data-public-testnet] .public-activation-details > .public-activation { margin-top: 12px; }
+[data-public-testnet] .public-conversation-history > summary { padding: 8px 12px; border: 1px dashed var(--muted-foreground); border-radius: 8px; color: var(--muted-foreground); font-size: 12px; }
+[data-public-testnet] .public-conversation-history [role="log"] { display: grid; gap: 16px; padding-top: 16px; }
+[data-public-testnet] .public-session > p,
+[data-public-testnet] .public-session > .action-row { margin-top: 12px; }
+@media (max-width: 760px) {
+  [data-public-testnet] .public-mandate-card .terms { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}

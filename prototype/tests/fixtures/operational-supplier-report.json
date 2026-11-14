@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "haldir.report.two-source.v1",
+  "purpose": "Fictional supplier research",
+  "output": "Evidence brief",
+  "status": "EVIDENCE_REVIEW_REQUIRED",
+  "supplierVerified": false,
+  "fictionalSample": true,
+  "qualification": "LOCAL_SYNTHETIC_ONLY",
+  "purchases": [
+    {
+      "sourceId": "company-records",
+      "quoteId": "WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMCJd",
+      "orderId": "source-0",
+      "vendorId": "registry.testnet",
+      "amountAtomic": "8",
+      "lifecycle": "DELIVERED",
+      "proofId": "[\"near-native-transfer-v1\",\"testnet\",\"swqrv48gsrwpBFbftEwnP2vB4jckpvfGJfXkwaniLCC\"]",
+      "artifactId": "fictional:WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMCJd"
+    },
+    {
+      "sourceId": "background-research",
+      "quoteId": "WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "orderId": "source-1",
+      "vendorId": "background.testnet",
+      "amountAtomic": "9",
+      "lifecycle": "DELIVERED",
+      "proofId": "[\"near-native-transfer-v1\",\"testnet\",\"3EKkiwNLWqoUbzFkPrmKbtUB4EweE6f4STzevYUmezeL\"]",
+      "artifactId": "fictional:WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd"
+    }
+  ],
+  "facts": [
+    {
+      "artifactId": "fictional:WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMCJd",
+      "excerpt": "Company record: Legal name: Northwind Print Ltd (fictional). Registration: NW-FICTION-2048. Registered address: 14 Paper Lane, Testhaven (fictional address). These are declared sample details, not a registry verification.",
+      "sourceId": "company-records",
+      "quoteId": "WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMCJd",
+      "orderId": "source-0",
+      "vendorId": "registry.testnet",
+      "amountAtomic": "8",
+      "proofId": "[\"near-native-transfer-v1\",\"testnet\",\"swqrv48gsrwpBFbftEwnP2vB4jckpvfGJfXkwaniLCC\"]",
+      "contentDigest": "6c6f8fa0e514dfa4ace460505a0908bdaaeb93f1f6a1b93839aef0ade17a04f2",
+      "fictionalSample": true
+    },
+    {
+      "artifactId": "fictional:WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "excerpt": "Research note: The sample supplier questionnaire lists registration NW-FICTION-2048 and site address 14 Paper Lane, Testhaven; these match the company record, but delivery capacity is self-reported at 12,000 cartons per month.",
+      "sourceId": "background-research",
+      "quoteId": "WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "orderId": "source-1",
+      "vendorId": "background.testnet",
+      "amountAtomic": "9",
+      "proofId": "[\"near-native-transfer-v1\",\"testnet\",\"3EKkiwNLWqoUbzFkPrmKbtUB4EweE6f4STzevYUmezeL\"]",
+      "contentDigest": "61e287df65ea5984280d62295fe49b7637a25d86002adbb47b1535ca75266907",
+      "fictionalSample": true
+    },
+    {
+      "artifactId": "fictional:WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "excerpt": "Certification gap: ISO 9001 certificate number, issuer and expiry are not documented in either sample; certification cannot be confirmed.",
+      "sourceId": "background-research",
+      "quoteId": "WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "orderId": "source-1",
+      "vendorId": "background.testnet",
+      "amountAtomic": "9",
+      "proofId": "[\"near-native-transfer-v1\",\"testnet\",\"3EKkiwNLWqoUbzFkPrmKbtUB4EweE6f4STzevYUmezeL\"]",
+      "contentDigest": "61e287df65ea5984280d62295fe49b7637a25d86002adbb47b1535ca75266907",
+      "fictionalSample": true
+    },
+    {
+      "artifactId": "fictional:WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "excerpt": "Next check: Before signing, request the ISO 9001 certificate number, issuer and expiry, then compare the certificate's legal name and site address with registration NW-FICTION-2048 at 14 Paper Lane, Testhaven.",
+      "sourceId": "background-research",
+      "quoteId": "WyJoYWxkaXItbG9jYWwtdjEiLCJ0ZXN0bmV0IiwidHdvLnRlc3RuZXQiLCJzb3VyY2UtMSJd",
+      "orderId": "source-1",
+      "vendorId": "background.testnet",
+      "amountAtomic": "9",
+      "proofId": "[\"near-native-transfer-v1\",\"testnet\",\"3EKkiwNLWqoUbzFkPrmKbtUB4EweE6f4STzevYUmezeL\"]",
+      "contentDigest": "61e287df65ea5984280d62295fe49b7637a25d86002adbb47b1535ca75266907",
+      "fictionalSample": true
+    }
+  ],
+  "interpretations": [
+    {
+      "kind": "COMPARE_SOURCE_CONSISTENCY",
+      "findingIndexes": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "COMPARE_COMPANY_DETAILS",
+      "findingIndexes": [
+        0,
+        2,
+        3
+      ]
+    }
+  ],
+  "limits": [
+    "FICTIONAL_SAMPLE",
+    "SOURCE_ACCURACY_NOT_VERIFIED",
+    "NO_SIGNING_ASSURANCE"
+  ],
+  "nextCheck": {
+    "code": "COMPARE_SOURCES_WITH_CONTRACT",
+    "sourceId": null
+  },
+  "missing": [],
+  "ownerActions": {
+    "stop": "OWNER_ACTION_REQUIRED",
+    "withdraw": "OWNER_ACTION_REQUIRED",
+    "residual": "NOT_OBSERVED"
+  }
+}

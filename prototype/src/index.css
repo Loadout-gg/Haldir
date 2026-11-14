@@ -1,0 +1,105 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Original variable font, Google Fonts ofl/manrope; license in same directory.
+   Acquisition revision and SHA-256 are retained in STEP6 font-provenance.json. */
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope/Manrope%5Bwght%5D.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Used variants retained from official shadcn@4.23.0 eject output. */
+@custom-variant data-open {
+  &:where([data-state="open"]), &:where([data-open]:not([data-open="false"])) { @slot; }
+}
+@custom-variant data-closed {
+  &:where([data-state="closed"]), &:where([data-closed]:not([data-closed="false"])) { @slot; }
+}
+
+@theme inline {
+  --font-sans: var(--ui-font-family);
+  --font-heading: var(--ui-font-family);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: var(--ui-radius-sm);
+  --radius-md: var(--ui-radius-md);
+  --radius-lg: var(--ui-radius-lg);
+  --radius-xl: var(--ui-radius-xl);
+}
+:root {
+  --ui-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ui-radius-sm: .375rem;
+  --ui-radius-md: .5rem;
+  --ui-radius-lg: .625rem;
+  --ui-radius-xl: .875rem;
+  color-scheme: light;
+  /* Approved STEP5 Haldir mapping. Supplied brand overrides generic aesthetics. */
+  --haldir-accent: #D5E7A3;
+  --haldir-ink: #15251F;
+  --haldir-forest: #173D32;
+  --haldir-sage: #738874;
+  --haldir-lichen: #DDE6D6;
+  --haldir-ivory: #F4F3E9;
+  --haldir-accent-depth: #C8D999;
+  --haldir-dark-forest: #112E26;
+  --haldir-dark-edge: #215747;
+  --haldir-white: #FFFFFF;
+  --haldir-info: #365D72;
+  --haldir-info-bg: #EDF3F5;
+  --haldir-success: #2F6B4F;
+  --haldir-success-bg: #EDF4EC;
+  --haldir-warning: #855A13;
+  --haldir-warning-bg: #FBF3DF;
+  --haldir-error: #A34E43;
+  --haldir-error-bg: #FAEEEB;
+  --background: #F8F9F8;
+  --foreground: #242424;
+  --card: #FFFFFF;
+  --card-foreground: #242424;
+  --popover: #FFFFFF;
+  --popover-foreground: #242424;
+  --primary: var(--haldir-forest);
+  --primary-foreground: #FFFFFF;
+  --secondary: #EFF1EF;
+  --secondary-foreground: #242424;
+  --muted: #F1F3F2;
+  --muted-foreground: #626862;
+  --accent: #EFF1EF;
+  --accent-foreground: #242424;
+  --destructive: var(--haldir-error);
+  --border: #DDE2DF;
+  /* Essential control edges stay separate from decorative Lichen card borders
+     and the stronger opaque Forest keyboard outline. */
+  --input: #858D87;
+  --ring: var(--haldir-forest);
+  --radius: .625rem;
+}
+@layer base {
+  * { @apply border-border; box-sizing: border-box; }
+  body { @apply font-sans bg-background text-foreground; margin: 0; -webkit-font-smoothing: antialiased; }
+  button:not(:disabled) { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+  ::selection { background: var(--secondary); color: var(--foreground); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

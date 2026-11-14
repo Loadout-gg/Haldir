@@ -1,0 +1,127 @@
+/* Landing-only extension of the incumbent reference-light Haldir UI.
+   No global resets, remote assets, decorative motion or shared token changes. */
+.haldir-landing {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 40px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--ui-font-family);
+  font-size: 16px;
+  line-height: 1.65;
+}
+.haldir-landing :where(h1, h2, h3, p, ol, dl, dd, figure) { margin: 0; }
+.haldir-landing :where(section, figure, li, main, dl, dd) { min-width: 0; }
+.haldir-landing h1, .haldir-landing h2 { text-wrap: balance; }
+.haldir-landing h1 { max-width: 20ch; font-size: clamp(2.25rem, 4.1vw, 3.5rem); font-weight: 600; line-height: 1.1; letter-spacing: -.03em; }
+.haldir-landing h2 { max-width: 27ch; font-size: clamp(1.75rem, 2.6vw, 2.5rem); font-weight: 600; line-height: 1.2; letter-spacing: -.025em; }
+.haldir-landing h3, .haldir-landing dt { font-size: 16px; font-weight: 600; line-height: 1.5; }
+.haldir-landing p, .haldir-landing dd { max-width: 72ch; }
+.haldir-landing a:focus-visible { outline: 2px solid var(--haldir-forest); outline-offset: 4px; box-shadow: none; }
+.haldir-landing a.group\/button { font-family: var(--ui-font-family); text-decoration: none; }
+.haldir-landing .landing-skip { position: absolute; z-index: 5; top: 8px; left: 16px; padding: 8px 16px; transform: translateY(-180%); background: var(--card); color: var(--haldir-forest); border-radius: 10px; }
+.haldir-landing .landing-skip:focus { transform: none; }
+.haldir-landing .landing-header { display: flex; align-items: center; gap: 32px; padding: 20px 40px; margin-inline: -40px; background: var(--card); border-bottom: 1px solid var(--border); }
+.haldir-landing .landing-logo { display: inline-flex; align-items: center; flex: none; min-height: 44px; }
+.haldir-landing .landing-logo img { width: 108px; height: auto; display: block; }
+.haldir-landing nav { display: flex; align-items: center; gap: 28px; margin-left: auto; }
+.haldir-landing nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 500; color: var(--haldir-forest); text-decoration: none; text-underline-offset: 4px; }
+.haldir-landing nav a:hover { text-decoration: underline; }
+.haldir-landing .landing-hero { padding-block: 80px 88px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 56px; }
+.haldir-landing .landing-eyebrow { margin-bottom: 20px; font-size: 14px; font-weight: 500; color: var(--haldir-forest); }
+.haldir-landing .landing-intro { margin-block: 24px; color: var(--muted-foreground); }
+.haldir-landing .landing-status { max-width: 40ch; margin-top: 16px; font-size: 13px; line-height: 1.6; color: var(--muted-foreground); }
+.haldir-landing .landing-label { color: var(--muted-foreground); font-size: 13px; font-weight: 500; margin-bottom: 12px; }
+.haldir-landing .landing-product-card { --tw-ring-shadow: 0 0 #0000; box-shadow: none; border: 1px solid var(--border); }
+.haldir-landing .landing-product-title { font-size: 14px; font-weight: 600; line-height: 1.5; }
+.haldir-landing .landing-product-subtitle { margin-top: 4px; font-size: 13px; color: var(--muted-foreground); }
+.haldir-landing .landing-product-body { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
+.haldir-landing .landing-product-conversation { display: flex; flex-direction: column; gap: 20px; font-size: 14px; line-height: 1.55; }
+.haldir-landing .landing-product-request { padding: 12px; border-radius: 12px; background: var(--foreground); color: var(--card); }
+.haldir-landing .landing-product-result { padding-block: 4px 16px; border-bottom: 1px solid var(--border); }
+.haldir-landing .landing-product-result > p:first-child { font-weight: 600; }
+.haldir-landing .landing-product-result > p + p { margin-top: 6px; }
+.haldir-landing .landing-product-amount, .haldir-landing .landing-product-continuation { font-size: 13px; color: var(--muted-foreground); }
+.haldir-landing .landing-product-permissions { padding-left: 16px; border-left: 1px solid var(--border); font-size: 13px; line-height: 1.5; }
+.haldir-landing .landing-product-permissions dl { margin-top: 16px; display: grid; gap: 12px; }
+.haldir-landing .landing-product-permissions dt { color: var(--muted-foreground); font-size: 12px; font-weight: 400; }
+.haldir-landing .landing-product-permissions dd { margin-top: 3px; }
+.haldir-landing .landing-product-ledger { border-top: 1px solid var(--border); padding-top: 16px; }
+.haldir-landing .landing-product-ledger > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; }
+.haldir-landing .landing-product-ledger dd { font-variant-numeric: tabular-nums; margin: 0; }
+.haldir-landing .landing-product-ledger > div:last-child dd { font-weight: 600; color: var(--haldir-forest); }
+.haldir-landing figcaption { margin-top: 12px; color: var(--muted-foreground); font-size: 12px; line-height: 1.6; }
+.haldir-landing .landing-section { padding-block: 72px; border-top: 1px solid var(--border); scroll-margin-top: 24px; }
+.haldir-landing .landing-section-heading { max-width: 760px; margin-bottom: 36px; }
+.haldir-landing .landing-section-heading > p:not(.landing-label) { margin-top: 20px; color: var(--muted-foreground); }
+.haldir-landing .landing-steps { list-style: decimal; padding-left: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; }
+.haldir-landing .landing-steps li { padding-left: 8px; }
+.haldir-landing .landing-steps li::marker { color: var(--haldir-forest); font-weight: 600; }
+.haldir-landing .landing-steps p { margin-top: 12px; color: var(--muted-foreground); }
+.haldir-landing .landing-demo { background: var(--card); padding-inline: 40px; margin-inline: -40px; }
+.haldir-landing .landing-scenario { list-style: none; padding: 0; }
+.haldir-landing .landing-scenario li { display: grid; grid-template-columns: 32px minmax(0, 1fr) 164px; align-items: start; gap: 20px; padding-block: 24px; border-bottom: 1px solid var(--border); }
+.haldir-landing .landing-beat { color: var(--haldir-forest); font-size: 20px; font-weight: 500; line-height: 1.3; }
+.haldir-landing .landing-scenario p { margin-top: 8px; color: var(--muted-foreground); }
+.haldir-landing .landing-scenario-fact { font-size: 14px; justify-self: end; font-variant-numeric: tabular-nums; }
+.haldir-landing .landing-blocked { color: var(--haldir-warning); }
+.haldir-landing .landing-caption { margin-top: 24px; color: var(--muted-foreground); font-size: 13px; line-height: 1.7; }
+.haldir-landing .landing-route-links { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.haldir-landing .landing-route-links > span { font-size: 13px; color: var(--muted-foreground); }
+.haldir-landing .landing-outcome { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 72px; }
+.haldir-landing .landing-outcome .landing-section-heading { margin-bottom: 0; }
+.haldir-landing .landing-control-list { display: grid; gap: 24px; }
+.haldir-landing .landing-control-list dd { margin-top: 8px; color: var(--muted-foreground); }
+.haldir-landing .landing-outcome > .landing-caption { grid-column: 1 / -1; margin-top: 4px; }
+.haldir-landing .landing-near { background: var(--muted); padding: 48px 40px; border: 1px solid var(--border); border-radius: 14px; }
+.haldir-landing .landing-near .landing-section-heading { margin-bottom: 0; }
+.haldir-landing .landing-questions { margin-top: 72px; display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 72px; }
+.haldir-landing .landing-questions dl > div { padding-block: 24px; border-bottom: 1px solid var(--border); }
+.haldir-landing .landing-questions dl > div:first-child { padding-top: 0; }
+.haldir-landing .landing-questions dd { margin-top: 12px; color: var(--muted-foreground); }
+.haldir-landing .landing-closing { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.haldir-landing .landing-closing p { margin-top: 20px; color: var(--muted-foreground); }
+.haldir-landing .landing-footer { padding-block: 24px 32px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; font-size: 12px; color: var(--muted-foreground); }
+@media (max-width: 1000px) {
+  .haldir-landing .landing-hero { gap: 32px; }
+  .haldir-landing .landing-product-body { grid-template-columns: minmax(0, 1fr); }
+  .haldir-landing .landing-product-permissions { border-left: 0; padding-left: 0; border-top: 1px solid var(--border); padding-top: 16px; }
+  .haldir-landing .landing-product-permissions > dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .haldir-landing .landing-product-ledger > div { display: block; }
+  .haldir-landing .landing-steps { gap: 32px; }
+  .haldir-landing .landing-outcome, .haldir-landing .landing-questions { column-gap: 40px; }
+}
+@media (max-width: 760px) {
+  .haldir-landing { padding-inline: 24px; }
+  .haldir-landing .landing-header { padding: 16px 24px 8px; margin-inline: -24px; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; }
+  .haldir-landing .landing-header > a:last-child { margin-left: auto; }
+  .haldir-landing nav { order: 3; width: 100%; justify-content: space-between; gap: 8px; margin: 0; }
+  .haldir-landing a.group\/button { min-height: 44px; height: auto; white-space: normal; text-align: center; }
+  .haldir-landing .landing-hero { padding-block: 48px 56px; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .haldir-landing h1 { font-size: clamp(2.25rem, 7vw, 3rem); max-width: 21ch; }
+  .haldir-landing .landing-product-body { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 16px; }
+  .haldir-landing .landing-product-permissions { border-top: 0; padding-top: 0; border-left: 1px solid var(--border); padding-left: 16px; }
+  .haldir-landing .landing-product-permissions > dl { grid-template-columns: minmax(0, 1fr); }
+  .haldir-landing .landing-product-ledger > div { display: flex; }
+  .haldir-landing .landing-section { padding-block: 48px; }
+  .haldir-landing .landing-section-heading { margin-bottom: 28px; }
+  .haldir-landing .landing-steps { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .haldir-landing .landing-demo { padding-inline: 24px; margin-inline: -24px; }
+  .haldir-landing .landing-scenario li { grid-template-columns: 24px minmax(0, 1fr); gap: 12px; }
+  .haldir-landing .landing-scenario-fact { grid-column: 2; justify-self: start; }
+  .haldir-landing .landing-outcome, .haldir-landing .landing-questions { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .haldir-landing .landing-near { padding: 28px 24px; }
+  .haldir-landing .landing-questions { margin-top: 48px; }
+  .haldir-landing .landing-closing { align-items: flex-start; flex-direction: column; gap: 24px; }
+}
+@media (max-width: 420px) {
+  .haldir-landing { padding-inline: 20px; }
+  .haldir-landing .landing-header { padding-inline: 20px; margin-inline: -20px; }
+  .haldir-landing .landing-logo img { width: 92px; }
+  .haldir-landing .landing-demo { padding-inline: 20px; margin-inline: -20px; }
+  .haldir-landing .landing-product-body { grid-template-columns: minmax(0, 1fr); }
+  .haldir-landing .landing-product-permissions { border-left: 0; padding-left: 0; border-top: 1px solid var(--border); padding-top: 16px; }
+  .haldir-landing .landing-product-permissions > dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .haldir-landing .landing-product-permissions .landing-product-ledger { grid-template-columns: minmax(0, 1fr); }
+  .haldir-landing .landing-near { padding-inline: 20px; }
+}

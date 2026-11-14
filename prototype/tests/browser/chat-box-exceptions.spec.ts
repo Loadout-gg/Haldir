@@ -1,0 +1,58 @@
+import { fileURLToPath } from 'node:url'
+import {test,expect,type Page} from '@playwright/test'
+const root=process.env.HALDIR_EVIDENCE_DIR ? `${process.env.HALDIR_EVIDENCE_DIR}/chat-box-exceptions` : fileURLToPath(new URL('../../../test-results/chat-box/screenshots', import.meta.url))
+const panel=(p:Page)=>p.getByRole('complementary',{name:'Working bar',exact:true})
+async function click(p:Page,name:string){await p.getByRole('button',{name,exact:true}).click()}
+async function active(p:Page){await p.getByText('Demo controls',{exact:true}).click();await click(p,'Open external proposal');await click(p,'Authorize mandate');await click(p,'Confirm funding')}
+async function shot(p:Page,name:string){await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:`${root}/${name}.png`})}
+test.beforeEach(async({page})=>{
+ await page.setViewportSize({width:1440,height:1000})
+ await page.route('**/*',r=>{const u=new URL(r.request().url());return u.origin===new URL(test.info().project.use.baseURL!).origin&&!u.pathname.startsWith('/api/')?r.continue():r.abort()})
+ await page.goto('/demo')
+})
+test('retained failed payment, unresolved reconciliation, expiry, closed readers and independent sources',async({page})=>{
+ await active(page)
+ await panel(page).getByRole('button',{name:'View authorized terms'}).click()
+ await page.getByRole('dialog').getByText('Authorization history',{exact:true}).click()
+ await expect(page.getByRole('dialog')).toContainText('Original snapshot retained')
+ await page.keyboard.press('Escape')
+ await click(page,'Start company records payment');await expect(panel(page)).toContainText('Reserved8 TEST')
+ await click(page,'Confirm failed company records payment');await expect(panel(page)).toContainText('Company records · Blocked');await expect(panel(page)).toContainText('Reserved0 TEST');await expect(panel(page)).toContainText('Available30 TEST')
+ await click(page,'Reset demo');await click(page,'Open external proposal');await click(page,'Authorize mandate');await click(page,'Confirm funding')
+ await click(page,'Start company records payment');await click(page,'Make company records payment uncertain')
+ await page.locator('.conversation-spending-actions').getByRole('button',{name:'Stop new spending'}).click();await click(page,'Confirm stop')
+ await page.locator('.conversation-spending-actions').getByRole('button',{name:'Check prior payments'}).click()
+ await expect(page.locator('.conversation-spending-actions').getByRole('button',{name:'Request return of 22 TEST'})).toBeDisabled()
+ await expect(panel(page)).toContainText('Reserved8 TEST')
+ await click(page,'Confirm company records payment');await click(page,'Deliver company records response')
+ await page.locator('.conversation-spending-actions').getByRole('button',{name:'Check prior payments'}).click();await page.locator('.conversation-spending-actions').getByRole('button',{name:'Request return of 22 TEST'}).click()
+ await click(page,'Confirm return');await expect(panel(page)).toContainText('Recovered22 TEST');await expect(panel(page)).toContainText('Spent8 TEST')
+ await panel(page).getByRole('button',{name:/^(?:Open company records evidence|Open evidence — company records)$/}).click();await expect(page.getByRole('dialog')).toContainText('Linked purchase: DEMO-RECORDS-01 · 8 TEST.');await page.keyboard.press('Escape')
+ await click(page,'Try a new purchase after stop');await expect(page.getByRole('status')).toContainText('Spending stopped');await expect(panel(page)).toContainText('Spent8 TEST')
+ await click(page,'Reset demo');await click(page,'Open external proposal');await click(page,'Authorize mandate');await click(page,'Confirm funding');await click(page,'Advance clock past expiry');await click(page,'Try purchase after expiry')
+ await expect(page.getByRole('status')).toContainText('Spending permission expired');await expect(panel(page)).toContainText('Spent0 TEST');await expect(panel(page)).toContainText('Available30 TEST')
+ await click(page,'Reset demo');await click(page,'Open external proposal');await click(page,'Authorize mandate');await click(page,'Confirm funding');await click(page,'S03 · Deliver company records');await click(page,'S05 · Two requests together');await expect(panel(page)).toContainText('Reserved15 TEST');await click(page,'S06 · Deliver background research')
+ for(const kind of ['evidence','receipt']) {await panel(page).getByRole('button',{name:`Open ${kind} — background research`}).click();await expect(page.getByRole('dialog')).toContainText('DEMO-BACKGROUND-02');await page.keyboard.press('Escape')}
+ await expect(panel(page)).toContainText('Spent23 TEST');await expect(panel(page)).toContainText('Available7 TEST')
+})
+test('shared editor conflict retains both choices without authorizing',async({page})=>{
+ await page.getByLabel('Your message').fill('budget 30');await click(page,'Send message')
+ await page.getByRole('region',{name:'Conversation',exact:true}).getByRole('button',{name:'Edit details',exact:true}).click()
+ const editor=page.getByRole('region',{name:'Edit draft details'})
+ await editor.getByLabel('Purchase budget (TEST)').fill('40')
+ await page.getByLabel('Your message').fill('budget 50');await click(page,'Send message')
+ await expect(editor.getByRole('alert')).toContainText('Chat changed a field');await expect(editor.getByRole('button',{name:'Save draft'})).toBeDisabled()
+ await editor.getByRole('button',{name:'Keep my edits'}).click();await editor.getByRole('button',{name:'Save draft'}).click();await expect(panel(page)).toContainText('40 TEST');await expect(panel(page)).toContainText('Not authorized')
+})
+for(const width of [768,390,320])test(`responsive visual reading and closed-panel control at ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:width>760?1000:844});await page.reload()
+ if(width===390)await shot(page,'mobile-390-initial')
+ if(width===768)await shot(page,'tablet-768-initial')
+ await active(page)
+ if(width<=760)await click(page,'Show task panel')
+ await panel(page).getByRole('button',{name:'View authorized terms'}).click();await expect(page.getByRole('dialog')).toContainText('30 TEST');await page.keyboard.press('Escape')
+ await panel(page).getByRole('button',{name:'Hide panel'}).click()
+ await expect(page.getByRole('complementary',{name:'Collapsed task panel'})).toContainText('Available 30 TEST')
+ await page.evaluate(()=>scrollTo(0,0));await expect(page.locator('.conversation-spending-actions').getByRole('button',{name:'Stop new spending'})).toBeInViewport()
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
+})

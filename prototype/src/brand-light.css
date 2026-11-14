@@ -1,0 +1,79 @@
+/* Owner-approved Brand Light B. Exact byte-channel recipes are recorded in
+   haldir-brand-color-two-proposals-evidence/palettes.json. Scope to workspace
+   routes (including their portalled readers), never the separately-owned landing.
+   Component anatomy/font/motion remain owned by the installed UI and App.css. */
+body:has(.preview-page) {
+  --background: #FDFDFB;
+  --foreground: #15251F;
+  --card: #FFFFFF;
+  --card-foreground: #15251F;
+  --popover: #FFFFFF;
+  --popover-foreground: #15251F;
+  --primary: #D5E7A3;
+  --primary-foreground: #173D32;
+  --secondary: #F5F8F3;
+  --secondary-foreground: #173D32;
+  --muted: #F9FBF8;
+  --muted-foreground: #44574A;
+  --accent: #F5F8F3;
+  --accent-foreground: #173D32;
+  --border: #DFE4E2;
+  --input: #5C7564;
+  --ring: #173D32;
+  --haldir-soft: #FBFCFA;
+  --haldir-warning: #855A13;
+  --haldir-warning-bg: #FCF7EA;
+  --haldir-warning-border: #CCB894;
+  --haldir-success: #2F6B4F;
+  --haldir-success-bg: #F3F8F3;
+  background: var(--background);
+  color: var(--foreground);
+}
+.preview-page :is(h1,h2,h3,h4), body:has(.preview-page) [data-slot="dialog-title"] { color: var(--haldir-forest); }
+.preview-page .user-intention { background: var(--haldir-forest); color: var(--haldir-ivory); }
+.preview-page .user-intention .message-author { color: var(--haldir-ivory); }
+.preview-page :is(.working-bar,.restoration > .working-bar,.collapsed-rail,.restoration > .collapsed-rail) { background: var(--muted); }
+.preview-page :is(.reference-card,.brief-preview,.permission-fields) { background: var(--secondary); border-color: var(--border); }
+.preview-page :is(.mandate-card,.supplied-email,.recipient-record details[open]) { background: var(--haldir-soft); }
+.preview-page :is(.recipient-record,.permission-fields label,.before-authorization,.ledger,.activity-list,.order-result,.block-established) { background: var(--card); }
+.preview-page .composer { border-color: var(--input); }
+.preview-page :is(.conversation-history > summary,.block-claims) { border-color: var(--input); }
+.preview-page .block-claims { background: var(--haldir-soft); }
+.preview-page .email-list li { background: var(--card); }
+.preview-page button:is([data-variant="default"],[data-variant="brand-primary"],[data-variant="brand-preparatory"]) { background: var(--primary); color: var(--primary-foreground); }
+.preview-page button[data-variant="brand-dark"] { background: var(--card); color: var(--haldir-forest); }
+.preview-page button[data-variant="outline"] { color: var(--haldir-forest); }
+body:has(.preview-page) button { background-image: none; box-shadow: none; }
+/* Installed base-nova link buttons use text-primary, unlike filled controls.
+   Accent is a fill, never small link text, including portalled public editors. */
+body:has(.preview-page) button.text-primary { color: var(--haldir-forest); }
+body:has(.preview-page) button:disabled { background: var(--secondary); color: var(--muted-foreground); }
+body:has(.preview-page) button:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; box-shadow: 0 0 0 3px var(--card); }
+.preview-page :is(.blocked-request,.block-established [data-tone="warning"]) { background: var(--haldir-warning-bg); border-color: var(--haldir-warning-border); color: var(--haldir-warning); }
+.preview-page .blocked-request :is(h3,[data-slot="card-title"],button) { color: var(--haldir-warning); }
+.preview-page [data-tone="received"] { color: var(--haldir-success); }
+.preview-page [data-tone="warning"] { color: var(--haldir-warning); }
+/* Native public UI consumes the same role tokens; absent API capabilities are
+   deliberately not represented by invented balances, amendment or email UI. */
+[data-public-testnet] :is(.public-source-context,.public-conversation-history > summary) { background: var(--secondary); }
+[data-public-testnet] .public-activation { background: var(--haldir-soft); }
+
+/* UI v1 foundation: 16px large surfaces, boxed task lane and no header rule.
+   Existing grid, reading measure, insets, controls and responsive breakpoints stay. */
+.preview-page .workspace-shell { border-radius: 16px; }
+.preview-page .workspace-header { border-bottom: 0; }
+.haldir-wordmark { flex: none; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--haldir-forest); }
+.preview-page :is([data-slot="card"],.reference-card,.composer,.recipient-record,.before-authorization,.ledger,.activity-list,.order-result,.brief-preview,.supplied-email,.block-claims,.block-established,.permission-fields,.panel-editor) { border-radius: 16px; }
+.preview-page :is(.working-bar,.restoration > .working-bar) { margin: 0 8px 8px; width: calc(100% - 16px); height: calc(100% - 8px); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.preview-page :is(.collapsed-rail,.restoration > .collapsed-rail) { margin: 0 8px 8px; border: 1px solid var(--border); border-radius: 16px; }
+.preview-page .assistant-message { position: relative; padding-inline-start: 0; }
+.preview-page .agent-name { display: block; margin-bottom: 4px; color: var(--muted-foreground); font-size: 12px; line-height: 20px; font-weight: 600; }
+.agent-avatar { position: absolute; inset-inline-start: 0; top: 0; display: block; width: 32px; height: 32px; overflow: hidden; border-radius: 50%; background: var(--card); }
+.agent-avatar img { width: 104px; max-width: none; height: 32px; object-fit: fill; }
+.preview-page :is(.composer-limit,.spending-actions > p,.panel-amendment-note) { font-size: 12px; line-height: 20px; font-weight: 400; }
+.preview-page .panel-amendment-note { flex-basis: 100%; color: var(--muted-foreground); }
+.preview-page .mandate-change-requirement { margin-top: 8px; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--muted-foreground); }
+@media (max-width: 760px) {
+  .preview-page .working-bar.restoration-panel { width: min(calc(100% - 16px),360px); height: auto; }
+  .preview-page .collapsed-rail { margin-top: 4px; }
+}

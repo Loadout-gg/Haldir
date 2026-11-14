@@ -56,18 +56,20 @@ See [the architecture and trust boundaries](docs/ARCHITECTURE.md) for the source
 
 Open [the scripted demo](https://haldir.ldt.sh/demo). It is a presenter-driven walkthrough, not a live financial service. No wallet, funds or model API key is needed for this mode.
 
+**Scripted simulation · No live funds or AI calls.**
+
 Follow the [demo guide](docs/DEMO.md) for exact actions and expected observations. The presenter controls deliberately expose simulated funding, purchase and return events; they are not agent autonomy or on-chain evidence.
 
 ## Implementation and evidence status
 
-This is a hackathon prototype, not an audited financial product. The latest reviewed publication is an interface preview and scripted demonstration; its financial execution, model execution and trusted signing are disabled. This documentation update does not certify a newer deployment.
+This is a hackathon prototype, not an audited financial product. The latest reviewed publication is an interface preview and scripted demonstration; its financial execution, model execution and trusted signing are disabled. This source publication does not certify a newer deployment.
 
 | Layer | What is available | What that establishes |
 | --- | --- | --- |
 | User experience | Conversational job preparation, mandate review, working panel and a scripted lifecycle | A way to inspect the interaction and state transitions, not real purchases |
 | Native NEAR contracts | Mandate and factory source; Rust and local Sandbox test suites | Inspectable enforcement logic and a local-chain qualification path |
 | Agent and backend | Two-source orchestration, payment/delivery evidence binding, report generation, owner operations and recovery adapters | Implemented components with local synthetic tests; not a completed public financial journey |
-| Focused verification | **386/386 tests passed on 14 November 2026**, using the exact command in the validation guide | Restricted wallet requests, owner-operation checks, two-source bindings, fixtures and runner behavior under synthetic transports |
+| Historical focused verification | Prior local tests exercised restricted wallet requests, owner operations, two-source bindings, fixtures and recovery under synthetic transports | Reused local evidence, not a rerun or clean-install proof of this public snapshot; see the [validation guide](docs/VALIDATION.md) |
 | Public end-to-end execution | **Not established by this documentation** | Requires a separately verified wallet, network, provider, persistence and hosted-runtime run |
 
 The focused test result reused installed dependencies. It is not a fresh-install result, security audit, live model invocation or public-chain acceptance. Broader historical test totals are intentionally not added together.
@@ -88,9 +90,11 @@ npm --prefix prototype run dev -- --host 127.0.0.1 --port 5173
 
 Open `http://127.0.0.1:5173/demo` for the scripted walkthrough. These commands do not activate a financial backend. Use an unused local port if 5173 is occupied.
 
-**Source-release boundary:** the application source snapshot must include `prototype/`, `src/`, `tests/` and the native qualification directories. A checkout containing only the early toolchain probes is not the full Haldir application. Clean-clone reproduction and publication of the complete source snapshot remain release checks; the commands above are not a claim that those checks have passed.
+**Source publication:** this repository now includes the selected React application, backend/agent/vendor modules, native mandate/factory contracts, tests and runtime-composition source—not only the initial probes. Its legacy React landing is separate from the newer standalone landing hosted at the website; source publication does not replace that hosted site or establish visual parity. Dependency caches, generated WASM/frontend builds and private operator evidence are not included. This first tranche intentionally withholds only `deployment/haldir-cloud/packet.py` and `deployment/haldir-cloud/test_packet.py` pending portable account configuration; the cloud command helper is not available in this release. Clean-install/build reproduction remains unverified; the commands above are instructions, not a claim that a fresh clone has been built successfully.
 
 [Validation guide](docs/VALIDATION.md): focused tests, UI build and native Sandbox setup. There is no root `npm test`; the root `test:sandbox` script tests the early return-42 probe, not the spending mandate.
+
+**Known native-Sandbox blocker:** the three maintained mandate/factory/journey Node harnesses still require Node `26.13.0`, while the project declares `26.13.1`. Generated mandate WASM must also be built before the factory. The [validation guide](docs/VALIDATION.md#3-execute-the-contracts-in-local-near-sandbox) records this mismatch; do not mistake historical local Sandbox evidence for fresh-clone acceptance.
 
 ## For reviewers
 
@@ -122,4 +126,6 @@ Start with [the demo](docs/DEMO.md), then [the trust boundaries](docs/ARCHITECTU
 
 Haldir was developed with AI coding assistance. Earlier code and package names may use **U01**, the project's original technical name. The stack includes NEAR SDK/API/Sandbox, Meteor, React, Vite, Tailwind, Base UI and Lucide; exact dependency versions are recorded in their lockfiles. The bundled Manrope font retains its SIL Open Font License (`prototype/public/fonts/manrope/OFL.txt`).
 
-**Haldir-owned source code is licensed under the [MIT License](LICENSE).** Third-party code and fonts retain their own license terms and notices. Brand marks, screenshots and other media are not automatically covered by the MIT grant unless separately stated. The final hackathon baseline/contribution disclosure must still be resolved before submission. Do not publish credentials, personal submission data or real customer email in this repository.
+**Haldir-owned source code is licensedunder the [MIT License](LICENSE).** Third-party code and fonts retain their own license terms and notices. Brand marks, screenshots and other media are not automatically covered by the MIT grant unless separately stated. The final hackathon baseline/contribution disclosure must still be resolved before submission. Do not publish credentials, personal submission data or real customer email in this repository.
+
+The code publication does not submit an application or assert submission readiness. See [source provenance and current reproduction limits](docs/SOURCE-PROVENANCE.md).

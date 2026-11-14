@@ -11,7 +11,7 @@ A React interface for preparing a research job, reviewing spending permissions a
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Product landing |
+| `/` | Legacy React product landing, not the separately hosted standalone landing |
 | `/app` | Workspace preview |
 | `/demo` | Explicitly scripted, fictional demonstration |
 | `/?mode=public-testnet` | Legacy workspace alias; the name does not establish live testnet execution |

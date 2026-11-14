@@ -1,0 +1,30 @@
+{
+  "status": "REQUIREMENTS_ONLY_NOT_A_RELEASE_OR_SUCCESS_RECEIPT",
+  "projectId": "loadout-haldir-demo",
+  "projectNumber": "147018706305",
+  "databaseId": "haldir",
+  "financialActions": false,
+  "requiredAdditionalFields": {
+    "approvedOrigin": "Exact approved HTTPS origin without trailing slash; provider readback or current official deterministic-URL contract evidence. A prospective deterministic origin is not deployment or reachability proof.",
+    "uiBuildReceiptSha256": "Actual SHA-256 of deployment/haldir-preview/ui-build-receipt.json; both receipt origins and every UI output hash must match the release.",
+    "approvalReference": "Visible frozen combined UI+Firestore+runtime release approval reference.",
+    "sources": "Map each requiredSourcePaths member below to its actual SHA-256. No extra source paths permitted.",
+    "ui": "Map finite UI receipt members relative to deployment/haldir-preview/ui to their actual SHA-256. Must include index.html, approved assets and fonts; no recursive source copy."
+  },
+  "requiredSourcePaths": [
+    "deployment/haldir-preview/main.mjs",
+    "deployment/haldir-preview/server.mjs",
+    "deployment/haldir-preview/firestore-repository.mjs",
+    "src/server/wallet-auth-http.mjs",
+    "src/server/wallet-session.mjs",
+    "src/server/near-owner-keys.mjs",
+    "deployment/haldir-preview/package.json",
+    "deployment/haldir-preview/package-lock.json"
+  ],
+  "qualificationInputsNotUploaded": [
+    "Firestore owner: genuine ADC readiness, finite SDK transport deadlines, transaction conflict/rollback/retry/race/restart/revocation tests under Node 26.13.1; distinguish offline tests from actual database evidence.",
+    "UI owner: hosted exact-origin Meteor loader/bundle, sign-message-only testnet flow, reload/logout/Secure-cookie browser acceptance and exact output receipt.",
+    "Combined frozen source/manifest review: financial routes and local fallback absent; no secrets in frontend or runtime source; Linux configured startup remains a later real test.",
+    "Owner/operator: budget alert readback, remaining gross USD50 envelope, pilot expiry/shutdown responsibility and mutation authorization."
+  ]
+}
